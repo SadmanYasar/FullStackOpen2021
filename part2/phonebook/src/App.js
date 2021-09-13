@@ -74,7 +74,9 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(NewNameObject))    
+      setPersons(persons.concat(NewNameObject)) 
+      setNewName('')
+      setNewNumber('')
 
     } else if ( nameOfPersons.indexOf(newName) !== -1 && PersonsNumbers.indexOf(newNumber) !== -1 ) {
       alert(`${newName} and ${newNumber} is already added to phonebook`)
