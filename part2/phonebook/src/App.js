@@ -1,39 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Persons from './Components/Persons'
 import PersonForm from './Components/PersonForm'
 import SearchFilter from './Components/SearchFilter'
+import axios from 'axios'
 
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
-
+  const [ persons, setPersons ] = useState([]) 
   const [filter, setFilter] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newSearchName, setNewSearchName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then((response) => {
+        setPersons(response.data)
+      })
+  }, [])
 
-  const HandleNewName = (event) => {
-    const newName = event.target.value
-    setNewName(newName)
-  }
-
-  const HandleSearchName = (event) => {
-    const newSearchName = event.target.value
-    setNewSearchName(newSearchName)
-
+  useEffect(() => {
     switch (newSearchName) {
       case "":
         setFilter([])
         break;
     
       default:
-        //removes white space for each name then turns to lowercase
+        //removes white space for each name
+        //then turns to lowercase
         //then index compared to -1
         setFilter(persons.filter((person) => 
         person.name
@@ -47,9 +42,18 @@ const App = () => {
         break;
     }
 
+  }, [newSearchName, persons])
 
 
-    
+
+  const HandleNewName = (event) => {
+    const newName = event.target.value
+    setNewName(newName)
+  }
+
+  const HandleSearchName = (event) => {
+    const newSearchName = event.target.value
+    setNewSearchName(newSearchName)
   }
 
   const HandleNewNumber = (event) => {
