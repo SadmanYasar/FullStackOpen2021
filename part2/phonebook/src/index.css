@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+h2 {
+  color: #1877F2;
+}
+
+.error {
+  color: grey;
+  font-size: 20px;
+  margin-bottom: 10px;
+}

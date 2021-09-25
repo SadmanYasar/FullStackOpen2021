@@ -2,28 +2,28 @@ import React, { useState, useEffect } from 'react'
 import Persons from './Components/Persons'
 import PersonForm from './Components/PersonForm'
 import SearchFilter from './Components/SearchFilter'
-import axios from 'axios'
-
+import personService from './services/persons'
+import Notification from './Components/Notification'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
-  const [filter, setFilter] = useState([])
+  const [ filter, setFilter ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newSearchName, setNewSearchName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ Message, setMessage ] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => {
-        setPersons(response.data)
-      })
+    personService
+      .getAll()
+      .then((initialPersons) => setPersons(initialPersons))
+      .catch((error) => setMessage(`Could not get data. Server response: ${error.response.status} ${error.response.statusText}`))
   }, [])
 
   useEffect(() => {
     switch (newSearchName) {
       case "":
-        setFilter([])
+        setFilter(persons)
         break;
     
       default:
@@ -65,46 +65,119 @@ const App = () => {
     event.preventDefault()
 
     if ( newName === "" || newNumber === "" ) {
-      alert("Empty field(s) detected!")
+      setMessage("Empty field(s) detected!")
+
+      setTimeout(() => {
+        setMessage(null)
+      }, 1000);
       return
     }
 
-    const nameOfPersons = persons.map((person) => person.name)
-    const PersonsNumbers = persons.map((person) => person.number)
+    const matches = persons.filter((person) => person.name === newName)
 
-    if ( nameOfPersons.indexOf(newName) === -1 && PersonsNumbers.indexOf(newNumber) === -1 ) {
-      const NewNameObject = {
-        id: persons.length + 1,
-        name: newName,
-        number: newNumber
+    if ( matches.length !== 0 ) {
+      if ( window.confirm(`${matches[0].name} already added to phonebook. Replace the old number with a new one?`) ) {
+        personService
+          .update(matches[0].id, {...matches[0], number: newNumber})
+          .then((updatedPerson) => {
+            setPersons(persons.map((person) => person.id === matches[0].id ? updatedPerson : person ))
+            setNewName('')
+            setNewNumber('')
+            setMessage(`${updatedPerson.name} has been successfully updated`)
+
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000);
+          })
+          .catch((error) => {
+            setMessage(`${matches[0].name} was already removed from server`)
+
+            setPersons(persons.filter((person) => person.id !== matches[0].id))
+            setNewName('')
+            setNewNumber('')
+
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000);
+
+            
+
+          })
       }
-      setPersons(persons.concat(NewNameObject)) 
-      setNewName('')
-      setNewNumber('')
-
-    } else if ( nameOfPersons.indexOf(newName) !== -1 && PersonsNumbers.indexOf(newNumber) !== -1 ) {
-      alert(`${newName} and ${newNumber} is already added to phonebook`)
-
-    } else if ( nameOfPersons.indexOf(newName) !== -1 && PersonsNumbers.indexOf(newNumber) === -1 ) {
-      alert(`${newName} is already added to phonebook`)
-
-    } else if ( nameOfPersons.indexOf(newName) === -1 && PersonsNumbers.indexOf(newNumber) !== -1 ) {
-      alert(`${newNumber} is already added to phonebook`)
+      return
     }
 
+    const NewNameObject = {
+      name: newName,
+      number: newNumber
+    }
+
+    personService
+      .create(NewNameObject)
+      .then((updatedPerson) => {
+        setPersons(persons.concat(updatedPerson))
+        setNewName('')
+        setNewNumber('') 
+        setMessage(`${updatedPerson.name} has been added`)
+
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000);
+      })
+      .catch((error) => {
+        setMessage(`Error! Server says: ${error.response.status} ${error.response.statusText}`)
+      
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000);
+      })
+    
+
+  }
+
+  const DeletePerson = (id) => {
+    const name = filter.find((person) => person.id === id).name
+    
+    if (window.confirm(`Delete ${name} ?`)) {
+      personService
+      .makeDelete(id)
+      .then((emptyObject) => {
+        setPersons(persons.filter((person) => person.id !== id))
+
+        setMessage(`${name} has been deleted`)
+
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000);
+      })
+      .catch((error) => {
+        setMessage(`Error! Server says: ${error.response.status} ${error.response.statusText}`)
+      
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000);
+      })
+    }
+    
+      
   }
 
 
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Notification message={Message} />
+
       <SearchFilter value={newSearchName} onChange={HandleSearchName} />
 
       <h2>Add a new</h2>
       <PersonForm onSubmit={HandleSubmit} name={newName} nameOnChange={HandleNewName} number={newNumber} numberOnChange={HandleNewNumber} />
       
       <h2>Numbers</h2>
-      <Persons persons={filter} />
+      
+      <Persons persons={filter} deletePerson = {DeletePerson}/>
+    
     </div>
   )
 }

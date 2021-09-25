@@ -5,7 +5,7 @@ const Country = ({filters}) => {
     const [weather, setWeather] = useState([])
   
     useEffect(() => {
-      let isMounted = true
+      let isMounted = true 
       const params = {
         access_key: process.env.REACT_APP_API_KEY,
         query: filters[0].capital
@@ -22,6 +22,7 @@ const Country = ({filters}) => {
       
       return () => isMounted = false 
     },[filters])
+
   
     if ( Object.keys(weather).length !== 0 ) {
       return(
