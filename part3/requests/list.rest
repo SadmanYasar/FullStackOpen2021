@@ -14,3 +14,21 @@ Content-Type: application/json
     "name": "Keanu Reeves",
     "number": "0101110011"
 }
+
+###
+GET https://mighty-reef-22944.herokuapp.com/
+
+###
+GET https://mighty-reef-22944.herokuapp.com/api/persons/
+
+###
+DELETE https://mighty-reef-22944.herokuapp.com/api/persons/4
+
+###
+POST https://mighty-reef-22944.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "Keanu Reeves",
+    "number": "0101110011"
+}
