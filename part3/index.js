@@ -23,10 +23,6 @@ morgan.token('request-body', (request, response) => JSON.stringify(request.body)
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :request-body'))
 
-app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
-})
-
 app.get('/api/persons', (request, response) => {
     Person
       .find({})
