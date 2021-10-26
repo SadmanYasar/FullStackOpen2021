@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
-if ( process.argv.length < 3 ) {
-    console.log('please enter password to connect to database')
-    process.exit(1)
+if (process.argv.length < 3) {
+  console.log('please enter password to connect to database')
+  process.exit(1)
 }
 
 const password = process.argv[2]
@@ -16,33 +16,33 @@ const url = `mongodb+srv://fullstackReactNode:${password}@cluster0.szixo.mongodb
 mongoose.connect(url)
 
 const recordSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+  name: String,
+  number: String,
 })
 
 const Record = mongoose.model('Record', recordSchema)
 
-if ( name === undefined || number === undefined ) {
-    //show all
-    console.log('phonebook:')
-    Record
-        .find({})
-        .then(result => {
-            result.forEach(record => {
-                console.log(record.name, record.number)
-            })
-            mongoose.connection.close()
-        })
-} else {
-    const record = new Record({
-        name: name,
-        number: number,
+if (name === undefined || number === undefined) {
+  // show all
+  console.log('phonebook:')
+  Record
+    .find({})
+    .then((result) => {
+      result.forEach((record) => {
+        console.log(record.name, record.number)
+      })
+      mongoose.connection.close()
     })
-    
-    record
-        .save()
-        .then(result => {
-            console.log('added ', result.name, 'number', result.number, 'to phonebook')
-            mongoose.connection.close()
-        })
+} else {
+  const record = new Record({
+    name,
+    number,
+  })
+
+  record
+    .save()
+    .then((result) => {
+      console.log('added ', result.name, 'number', result.number, 'to phonebook')
+      mongoose.connection.close()
+    })
 }

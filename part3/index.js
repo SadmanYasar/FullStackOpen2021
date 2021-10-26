@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+
 const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
@@ -12,88 +13,85 @@ app.use(express.json())
 
 const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
-    return response.status(400).send({error: 'malformatted id'})
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({error: error.message})
+    return response.status(400).send({ error: 'malformatted id' })
+  } if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
   next(error)
 }
 
+// eslint-disable-next-line no-unused-vars
 morgan.token('request-body', (request, response) => JSON.stringify(request.body))
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :request-body'))
 
 app.get('/api/persons', (request, response) => {
-    Person
-      .find({})
-      .then(persons => {
-        response.json(persons)
-      })
-    
+  Person
+    .find({})
+    .then((persons) => {
+      response.json(persons)
+    })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-  const id = request.params.id
+  const { id } = request.params
   Person
     .findById(id)
-    .then(person => {
+    .then((person) => {
       if (person) {
         response.json(person)
       } else {
         response.status(404).end()
       }
     })
-    .catch(error => next(error))
-
+    .catch((error) => next(error))
 })
 
 app.get('/info', (request, response) => {
-    const date = new Date()
+  const date = new Date()
 
-    Person
-      .find({})
-      .then(persons => {
-        const responseText = `<p>Phone has info for ${persons.length} people</p><p>${date}</p>`
-        response.send(responseText) 
-      })
-
-    
+  Person
+    .find({})
+    .then((persons) => {
+      const responseText = `<p>Phone has info for ${persons.length} people</p><p>${date}</p>`
+      response.send(responseText)
+    })
 })
 
 app.post('/api/persons', (request, response, next) => {
-  const body = request.body
-  
+  const { body } = request
+
   if (!body.name || !body.number) {
-    response.status(400).json({error: "missing field(s)"})
+    response.status(400).json({ error: 'missing field(s)' })
     return
   }
 
-  const person = new Person({...body})
+  const person = new Person({ ...body })
 
   person
     .save()
-    .then(addedPerson => {
+    .then((addedPerson) => {
       console.log('added ', addedPerson.name, 'number', addedPerson.number, 'to phonebook')
       response.json(addedPerson)
     })
-    .catch(error => next(error))
-  
+    .catch((error) => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-  const id = request.params.id
+  const { id } = request.params
   Person
     .findByIdAndRemove(id)
-    .then(result => {
+    // eslint-disable-next-line no-unused-vars
+    .then((result) => {
       response.status(204).end()
     })
-    .catch(error => next(error))
+    .catch((error) => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  const id = request.params.id
+  const { id } = request.params
 
-  const body = request.body
+  const { body } = request
 
   const person = {
     name: body.name,
@@ -103,16 +101,16 @@ app.put('/api/persons/:id', (request, response, next) => {
   Person
     .findByIdAndUpdate(id, person, {
       new: true,
-      runValidators: true
-    },)
-    .then(updatedPerson => {
+      runValidators: true,
+    })
+    .then((updatedPerson) => {
       if (updatedPerson) {
         response.json(updatedPerson)
       } else {
         response.status(404).end()
       }
     })
-    .catch(error => next(error))
+    .catch((error) => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -123,7 +121,7 @@ app.use(unknownEndpoint)
 
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+const { PORT } = process.env
 app.listen(PORT, () => {
-    console.log(`App running on port ${PORT}`)
+  console.log(`App running on port ${PORT}`)
 })
