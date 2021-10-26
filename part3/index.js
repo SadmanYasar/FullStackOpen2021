@@ -4,10 +4,8 @@ const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const Person = require('./models/person')
-//%HOMEDRIVE%%HOMEPATH%
-//Use development server on frontend at this stage!!!
 
-//app.use(express.static('build'))
+app.use(express.static('build'))
 app.use(cors())
 
 app.use(express.json())
@@ -66,7 +64,7 @@ app.get('/info', (request, response) => {
     
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
   
   if (!body.name || !body.number) {
@@ -107,7 +105,10 @@ app.put('/api/persons/:id', (request, response, next) => {
   }
 
   Person
-    .findByIdAndUpdate(id, person, {new: true})
+    .findByIdAndUpdate(id, person, {
+      new: true,
+      runValidators: true
+    },)
     .then(updatedPerson => {
       if (updatedPerson) {
         response.json(updatedPerson)

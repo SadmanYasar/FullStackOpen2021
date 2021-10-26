@@ -90,47 +90,49 @@ const App = () => {
             }, 5000);
           })
           .catch((error) => {
-            setMessage(`${matches[0].name} was already removed from server`)
-
-            setPersons(persons.filter((person) => person.id !== matches[0].id))
-            setNewName('')
-            setNewNumber('')
-
+            if (error.response.status === 404) {
+              setMessage(`${matches[0].name} was already removed from server`)
+              setPersons(persons.filter((person) => person.id !== matches[0].id))
+              setNewName('')
+              setNewNumber('')
+            } else {
+              setMessage(`${error.response.data.error}`)
+            }
+          
             setTimeout(() => {
               setMessage(null)
             }, 5000);
 
-            
-
           })
       }
-      return
+    } else {
+      const NewNameObject = {
+        name: newName,
+        number: newNumber
+      }
+  
+      personService
+        .create(NewNameObject)
+        .then((updatedPerson) => {
+          setPersons(persons.concat(updatedPerson))
+          setNewName('')
+          setNewNumber('') 
+          setMessage(`${updatedPerson.name} has been added`)
+  
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000);
+        })
+        .catch((error) => {
+          setMessage(`Error! Server says: ${error.response.status} ${error.response.statusText} ${error.response.data.error}`)
+        
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000);
+        })
     }
 
-    const NewNameObject = {
-      name: newName,
-      number: newNumber
-    }
-
-    personService
-      .create(NewNameObject)
-      .then((updatedPerson) => {
-        setPersons(persons.concat(updatedPerson))
-        setNewName('')
-        setNewNumber('') 
-        setMessage(`${updatedPerson.name} has been added`)
-
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000);
-      })
-      .catch((error) => {
-        setMessage(`Error! Server says: ${error.response.status} ${error.response.statusText}`)
-      
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000);
-      })
+    
     
 
   }
