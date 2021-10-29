@@ -1,0 +1,12 @@
+GET http://localhost:3003/api/blogs 
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "blogSecond",
+    "author": "SY17",
+    "url":"https://www.dafk.net/what/",
+    "likes": "420"
+}
