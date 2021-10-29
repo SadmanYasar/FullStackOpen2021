@@ -5,8 +5,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "blogThird",
+    "title": "blogFourth",
     "author": "SY17",
     "url":"https://www.dafk.net/what/",
-    "likes": "6969"
+    "likes": "222"
 }
