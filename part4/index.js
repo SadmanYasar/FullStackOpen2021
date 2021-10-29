@@ -5,23 +5,7 @@ const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
-
-blogSchema.set('toJSON', {
-  transform: (document, returnedDocument) => {
-    returnedDocument.id = returnedDocument._id
-    delete returnedDocument.__v
-    delete returnedDocument._id
-  }
-})
-
-const Blog = mongoose.model('Blog', blogSchema)
-
+const Blog = require('./models/blog')
 const mongoUrl = process.env.MONGO_URI
 
 console.log(`connecting to ${mongoUrl}`)
