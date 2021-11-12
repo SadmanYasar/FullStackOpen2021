@@ -59,7 +59,16 @@ const blogs = [
     url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
     likes: 2,
     __v: 0
+  },
+  {
+    _id: "5a422bc61b54a676234d17fa",
+    title: "Type cars",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    likes: 2,
+    __v: 0
   }  
+
 ]
 
 test('dummy returns one', () => {
@@ -86,7 +95,7 @@ describe('total likes', () => {
     test('of a bigger list is calculated right', () => {
         const result = listHelper.totalLikes(blogs)
 
-        expect(result).toBe(36)
+        expect(result).toBe(38)
     })
     
     
@@ -100,7 +109,7 @@ describe('favourite blog', () => {
         expect(result).toBe(0)
     })
 
-    test.only('when list has only one blog, is that blog', () => {
+    test('when list has only one blog, is that blog', () => {
         const maxLikes = listHelper.favouriteBlog(listWithOneBlog)
 
         const favouriteBlog = blogs.find(blog => blog.likes === maxLikes)
@@ -108,6 +117,71 @@ describe('favourite blog', () => {
         expect(favouriteBlog).toEqual(listWithOneBlog[0])
     })
     
+    test('of a bigger list is calculated right', () => {
+      const maxLikes = listHelper.favouriteBlog(blogs)
+
+      const favouriteBlog = blogs.find(blog => blog.likes === maxLikes)
+
+      expect(favouriteBlog).toEqual(blogs[2]) 
+    })
+    
     
 })
+
+describe('most blogs', () => {
+  test('of empty list is zero', () => {
+    const result = listHelper.mostBlogs([])
+
+    expect(result).toBe(0)
+  })
+
+  test('when list has only one blog, is that blog', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
+  })
+
+  test('of a bigger list is calculated right', () => {
+    const result = listHelper.mostBlogs(blogs)
+
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 4
+    })
+  })
+  
+  
+  
+})
+
+describe('most likes', () => {
+  test('of empty list is 0', () => {
+    const result = listHelper.mostLikes([])
+
+    expect(result).toBe(0)
+  })
+
+  test('when list has only one blog, is that blog', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
+  })
+
+  test('of a bigger list is calculated right', () => {
+    const result = listHelper.mostLikes(blogs)
+
+    expect(result).toEqual({
+        author: "Edsger W. Dijkstra",
+        likes: 17
+    })
+  })
+  
+})
+
 
