@@ -6,6 +6,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
 const blogRouter = require('./controllers/blogs')
+const middleware = require('./utils/middleware')
 
 const mongoUrl = config.MONGO_URI
 
@@ -27,5 +28,9 @@ morgan.token('request-body', (request, response) => JSON.stringify(request.body)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :request-body'))
 
 app.use('/api/blogs', blogRouter)
+
+app.use(middleware.unknownEndpoint)
+
+app.use(middleware.errorHandler)
 
 module.exports = app
