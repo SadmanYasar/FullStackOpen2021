@@ -37,11 +37,14 @@ test('unique identifier property of the blog posts is named id', async () => {
   }
 })
 
-test('invalid blog not posted', async () => {
+test('empty object not posted', async () => {
   await api
     .post('/api/blogs')
     .send({})
     .expect(400)
+
+  const blogs = await helper.blogsInDb()  
+  expect(blogs).toHaveLength(helper.initialBlogs.length)
 })
 
 test('valid blog posted correctly', async () => {
@@ -63,6 +66,23 @@ test('valid blog posted correctly', async () => {
   expect(titles).toContain('okay this is epic')
 })
 
+test('if likes property is missing from request, it will default to 0', async () => {
+  await api
+    .post('/api/blogs')
+    .send({
+      title: 'this should have 0 likes',
+      author: 'joeB',
+      url: 'somelink.xyz',
+    })
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length+1)
+
+  const blogAdded = blogsAtEnd.find(blog => blog.title === 'this should have 0 likes')
+  expect(blogAdded.likes).toBe(0)
+})
 
 afterAll(() => {
     mongoose.connection.close()
