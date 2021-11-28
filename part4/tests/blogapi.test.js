@@ -38,10 +38,10 @@ test('unique identifier property of the blog posts is named id', async () => {
 })
 
 test('empty object not posted', async () => {
-  await api
+  const result = await api
     .post('/api/blogs')
     .send({})
-    .expect(400)
+    .expect(400)  
 
   const blogs = await helper.blogsInDb()  
   expect(blogs).toHaveLength(helper.initialBlogs.length)
@@ -83,6 +83,20 @@ test('if likes property is missing from request, it will default to 0', async ()
   const blogAdded = blogsAtEnd.find(blog => blog.title === 'this should have 0 likes')
   expect(blogAdded.likes).toBe(0)
 })
+
+test('if title and url missing, backend responds with status 400', async () => {
+  await api
+    .post('/api/blogs')
+    .send({
+      author: 'someGuy',
+      likes: 40
+    })
+    .expect(400)  
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
