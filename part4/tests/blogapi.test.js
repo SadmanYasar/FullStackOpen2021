@@ -97,6 +97,22 @@ test('if title and url missing, backend responds with status 400', async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
+test.only('blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+  
+  const blogsAfterDelete = await helper.blogsInDb()
+  expect(blogsAfterDelete).toHaveLength(helper.initialBlogs.length - 1)
+  
+  const titles = blogsAfterDelete.map(blog => blog.title)
+  expect(titles).not.toContain(blogToDelete.title)
+})
+
+
 
 afterAll(() => {
     mongoose.connection.close()
