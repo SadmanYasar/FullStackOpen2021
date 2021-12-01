@@ -97,7 +97,7 @@ test('if title and url missing, backend responds with status 400', async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
-test.only('blog can be deleted', async () => {
+test('blog can be deleted', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
 
@@ -111,6 +111,76 @@ test.only('blog can be deleted', async () => {
   const titles = blogsAfterDelete.map(blog => blog.title)
   expect(titles).not.toContain(blogToDelete.title)
 })
+
+test('blog can be updated', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const updatedBlog = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send({
+      title: 'this is an updated blog',
+      author: 'jesse',
+      url: 'somewebsite.com',
+      likes: 30
+    })
+    .expect(200)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const titles = blogsAtEnd.map(blog => blog.title)
+
+  expect(titles).not.toContain(blogToUpdate.title)
+  expect(titles).toContain(updatedBlog.body.title)
+  expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+})
+
+test('blog updated if likes property missing in request body ', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const updatedBlog = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send({
+      title: 'this is an updated blog with no likes',
+      author: 'jesse',
+      url: 'somewebsite.com',
+    })
+    .expect(200)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const titles = blogsAtEnd.map(blog => blog.title)
+
+  expect(titles).not.toContain(blogToUpdate.title)
+  expect(titles).toContain(updatedBlog.body.title)
+  expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+})
+
+test('blog not updated if required field(s) missing', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+
+  const result = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send({
+      title: '',
+      author:'s',
+      likes: 33
+    })
+    .expect(400)
+
+  console.log(result.body.error)  
+  
+  const blogsAtEnd = await helper.blogsInDb()
+
+  console.log(blogsAtEnd)
+  const titles = blogsAtEnd.map(blog => blog.title)
+
+  expect(titles).toContain(blogToUpdate.title)
+  expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+})
+
 
 
 

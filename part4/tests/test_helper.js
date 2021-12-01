@@ -5,13 +5,13 @@ const initialBlogs = [
       title: 'hello world',
       author: 'sy17',
       url: 'www.someurl.org',
-      likes: 69
+      likes: 20
     } ,
     {
       title: 'hello again',
-      author: 'sy17',
-      url: 'www.someurl.org',
-      likes: 420
+      author: 'solid snake',
+      url: 'www.anotherURL.org',
+      likes: 100
     }
   ]
 
@@ -20,7 +20,7 @@ const nonExistingId = async () => {
         title: 'will be deleted',
         author: 'sadvc',
         url: 'www.sasdfe.org',
-        likes: 69
+        likes: 30
     })
     await note.save()
     await note.remove()
