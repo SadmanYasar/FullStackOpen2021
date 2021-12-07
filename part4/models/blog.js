@@ -18,18 +18,23 @@ const blogSchema = new mongoose.Schema({
       required: true,
       minlength: 4,
     },
-    likes: Number
+    likes: Number,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   })
+
+blogSchema.set('toJSON', {
+  transform: (document, returnedDocument) => {
+    returnedDocument.id = returnedDocument._id.toString()
+    delete returnedDocument.__v
+    delete returnedDocument._id
+  }
+})
 
 blogSchema.plugin(uniqueValidator)
 
-  blogSchema.set('toJSON', {
-    transform: (document, returnedDocument) => {
-      returnedDocument.id = returnedDocument._id.toString()
-      delete returnedDocument.__v
-      delete returnedDocument._id
-    }
-  })
   
 module.exports = mongoose.model('Blog', blogSchema)
   

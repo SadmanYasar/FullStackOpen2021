@@ -10,3 +10,16 @@ Content-Type: application/json
     "url":"https://www.dafk.net/what/",
     "likes": "222"
 }
+
+###
+GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "CarlJohnson",
+    "name": "YoungMaylay",
+    "password": "1"
+}
