@@ -5,10 +5,11 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "blogFourth",
+    "title": "this blog has a user",
     "author": "SY17",
     "url":"https://www.dafk.net/what/",
-    "likes": "222"
+    "likes": "222",
+    "userId": "61b21f29adb1b30d418f2b73"
 }
 
 ###
@@ -21,5 +22,5 @@ Content-Type: application/json
 {
     "username": "CarlJohnson",
     "name": "YoungMaylay",
-    "password": "1"
+    "password": "12345"
 }
