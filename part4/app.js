@@ -25,6 +25,7 @@ mongoose
 
 app.use(cors())
 app.use(express.json())
+app.use(middleware.tokenExtractor)
 
 morgan.token('request-body', (request, response) => JSON.stringify(request.body))
 
