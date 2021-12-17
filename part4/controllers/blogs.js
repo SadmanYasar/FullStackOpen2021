@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
+const middleware = require('../utils/middleware');
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -9,7 +10,7 @@ blogRouter.get('/', async (request, response) => {
   response.json(blogs);
 });
 
-blogRouter.post('/', async (request, response) => {
+blogRouter.post('/', middleware.userExtractor, async (request, response) => {
   const { body } = request;
   const { user } = request;
 
@@ -28,7 +29,7 @@ blogRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog);
 });
 
-blogRouter.delete('/:id', async (request, response) => {
+blogRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const blog = await Blog.findById(request.params.id);
   const { user } = request;
 
@@ -46,7 +47,7 @@ blogRouter.delete('/:id', async (request, response) => {
   return response.status(204).end();
 });
 
-blogRouter.put('/:id', async (request, response) => {
+blogRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const { body } = request;
 
   if (!body.likes) {
