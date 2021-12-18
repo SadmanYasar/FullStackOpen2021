@@ -55,14 +55,17 @@ const App = () => {
   const [message, setmessage] = useState(null)
 
   useEffect(() => {
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs )
+    )
+  }, [])
+
+  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setuser(user)
       blogService.setToken(user.token)
-      blogService.getAll().then(blogs =>
-        setBlogs( blogs )
-      )
     }
       
   }, [])
@@ -110,13 +113,16 @@ const App = () => {
       <Notification message={message}/>
 
       {user === null 
-      ? <LoginForm 
-      username={username}
-      password={password}
-      onUserChange={HandleUserName} 
-      onPasswordChange={HandlePassword}
-      onSubmit={HandleLogin} 
-      />
+      ? <div>
+          <p>Login to application</p>
+          <LoginForm 
+          username={username}
+          password={password}
+          onUserChange={HandleUserName} 
+          onPasswordChange={HandlePassword}
+          onSubmit={HandleLogin} 
+          />
+        </div>
       
       : <div>
           <p>Logged in as {user.name}</p>
