@@ -9,9 +9,9 @@ const Notification = ({message}) => {
   }
 
   return(
-    <>
-      <p>{message}</p>
-    </>
+    <div id="notification" notificationtype={message.type}>
+      <p>{message.message}</p>
+    </div>
   )
 }
 const LoginForm = ({username, password, onUserChange, onPasswordChange, onSubmit}) => {
@@ -40,6 +40,43 @@ const LoginForm = ({username, password, onUserChange, onPasswordChange, onSubmit
       </form>
   )
 }
+const BlogForm = ({title, author, url, onTitleChange, onAuthorChange, onUrlChange, onSubmit}) => {
+  return(
+      <form onSubmit={onSubmit}>
+        <div>
+          Title: 
+          <input 
+          type="text" 
+          name="Title" 
+          value={title}
+          onChange={onTitleChange} 
+          />
+        </div>
+
+        <div>
+          Author: 
+          <input 
+          type="text" 
+          name="Author"
+          value={author} 
+          onChange={onAuthorChange} 
+          />
+        </div>
+
+        <div>
+          URL: 
+          <input 
+          type="url" 
+          name="URL"
+          value={url} 
+          onChange={onUrlChange} 
+          required
+          />
+        </div>
+        <button type="submit">Add</button>
+      </form>
+  )
+}
 
 const LogOutButton = ({onClick}) => {
   return(
@@ -53,6 +90,9 @@ const App = () => {
   const [password, setpassword] = useState('')
   const [user, setuser] = useState(null)
   const [message, setmessage] = useState(null)
+  const [title, settitle] = useState('')
+  const [author, setauthor] = useState('')
+  const [url, seturl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -94,7 +134,10 @@ const App = () => {
       setpassword('')
       
     } catch (error) {
-      setmessage('Wrong credentials')
+      setmessage({
+        message: 'Wrong credentials', 
+        type: 'error'
+      })
       setTimeout(() => {
         setmessage(null)
       }, 5000);
@@ -107,6 +150,42 @@ const App = () => {
     setuser(null)
   }
 
+  const HandleTitle = (event) => {
+    settitle(event.target.value)
+  }
+
+  const HandleAuthor = (event) => {
+    setauthor(event.target.value)
+  }
+  const HandleURL = (event) => {
+    seturl(event.target.value)
+  }
+
+  const HandleBlogSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      const blog = await blogService.create({title, author, url})
+      settitle('')
+      setauthor('')
+      seturl('')
+      setmessage({
+        message: `Blog ${blog.title} has been added`,
+        type: 'success'
+      })
+      setBlogs(blogs.concat(blog))
+      setTimeout(() => {
+        setmessage(null)
+      }, 3000);
+    } catch (error) {
+      setmessage({
+        message: error.response.data.error,
+        type: 'error'
+      })
+      setTimeout(() => {
+        setmessage(null)
+      }, 5000);
+    }
+  }
   return (
     <div>
       <h2>Blogs</h2>
@@ -127,6 +206,14 @@ const App = () => {
       : <div>
           <p>Logged in as {user.name}</p>
           <LogOutButton onClick={HandleLogOut}/>
+          <BlogForm
+          title={title}
+          author={author}
+          url={url}
+          onTitleChange={HandleTitle} 
+          onAuthorChange={HandleAuthor}
+          onUrlChange={HandleURL}
+          onSubmit={HandleBlogSubmit}/>
           {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
           )} 
