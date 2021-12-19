@@ -1,88 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import LogOutButton from './components/LogOutButton'
 import blogService from './services/blogs'
 import loginService from './services/login'
-
-const Notification = ({message}) => {
-  if (!message) {
-    return null
-  }
-
-  return(
-    <div id="notification" notificationtype={message.type}>
-      <p>{message.message}</p>
-    </div>
-  )
-}
-const LoginForm = ({username, password, onUserChange, onPasswordChange, onSubmit}) => {
-  return(
-      <form onSubmit={onSubmit}>
-        <div>
-          Username: 
-          <input 
-          type="text" 
-          name="Username" 
-          value={username}
-          onChange={onUserChange} 
-          />
-        </div>
-
-        <div>
-          Password: 
-          <input 
-          type="password" 
-          name="Password"
-          value={password} 
-          onChange={onPasswordChange} 
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-  )
-}
-const BlogForm = ({title, author, url, onTitleChange, onAuthorChange, onUrlChange, onSubmit}) => {
-  return(
-      <form onSubmit={onSubmit}>
-        <div>
-          Title: 
-          <input 
-          type="text" 
-          name="Title" 
-          value={title}
-          onChange={onTitleChange} 
-          />
-        </div>
-
-        <div>
-          Author: 
-          <input 
-          type="text" 
-          name="Author"
-          value={author} 
-          onChange={onAuthorChange} 
-          />
-        </div>
-
-        <div>
-          URL: 
-          <input 
-          type="url" 
-          name="URL"
-          value={url} 
-          onChange={onUrlChange} 
-          required
-          />
-        </div>
-        <button type="submit">Add</button>
-      </form>
-  )
-}
-
-const LogOutButton = ({onClick}) => {
-  return(
-    <button onClick={onClick}>Logout</button>
-  )
-}
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
