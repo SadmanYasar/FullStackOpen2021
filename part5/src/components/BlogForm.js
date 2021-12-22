@@ -1,15 +1,35 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-const BlogForm = ({title, author, url, onTitleChange, onAuthorChange, onUrlChange, onSubmit}) => {
-    return(
-        <form onSubmit={onSubmit}>
+const BlogForm = ({Create}) => {
+  const [title, settitle] = useState('')  
+  const [author, setauthor] = useState('')
+  const [url, seturl] = useState('')
+
+  const HandleTitle = ({target}) => settitle(target.value)
+  const HandleAuthor = ({target}) => setauthor(target.value)
+  const HandleURL = ({target}) => seturl(target.value)
+
+  const Add = (event) => {
+    event.preventDefault()
+
+    Create({
+      title, author, url
+    })
+
+    settitle('')
+    setauthor('')
+    seturl('')
+  }
+
+  return(
+        <form onSubmit={Add}>
           <div>
             Title: 
             <input 
             type="text" 
             name="Title" 
             value={title}
-            onChange={onTitleChange} 
+            onChange={HandleTitle} 
             />
           </div>
   
@@ -19,7 +39,7 @@ const BlogForm = ({title, author, url, onTitleChange, onAuthorChange, onUrlChang
             type="text" 
             name="Author"
             value={author} 
-            onChange={onAuthorChange} 
+            onChange={HandleAuthor} 
             />
           </div>
   
@@ -29,7 +49,7 @@ const BlogForm = ({title, author, url, onTitleChange, onAuthorChange, onUrlChang
             type="url" 
             name="URL"
             value={url} 
-            onChange={onUrlChange} 
+            onChange={HandleURL} 
             required
             />
           </div>
