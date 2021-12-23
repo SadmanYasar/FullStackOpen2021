@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import Toggleable from './components/Toggleable'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -7,37 +8,6 @@ import LogOutButton from './components/LogOutButton'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const Toggleable = React.forwardRef((props, ref) => {
-  const [visible, setvisible] = useState(false)
-
-  const hideWhenVisible = {display: visible ? 'none' : ''}
-  const showWhenVisible = {display: visible ? '' : 'none'}
-
-  const toggleVisibility = () => {
-    setvisible(!visible)
-  } 
-
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        toggleVisibility
-      }
-    }
-  )
-
-  return(
-    <div>
-      <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
-      </div>
-      <div style={showWhenVisible}>
-        {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
-      </div>
-    </div>
-  )
-})
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
