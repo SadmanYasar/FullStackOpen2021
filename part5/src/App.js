@@ -98,7 +98,7 @@ const App = () => {
       {user === null 
       ? <div>
           <p>Login to application</p>
-          <Toggleable buttonLabel='login'>
+          <Toggleable buttonLabel='login' closeLabel='Cancel'>
             <LoginForm  Login={HandleLogin} />
           </Toggleable>
         </div>
@@ -107,12 +107,12 @@ const App = () => {
           <p>Logged in as {user.name}</p>
           <LogOutButton onClick={HandleLogOut}/>
 
-          <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
+          <Toggleable buttonLabel='Add a blog' closeLabel='Cancel' ref={blogFormRef}>
             <BlogForm Create={HandleBlogSubmit} />
           </Toggleable>
 
           {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} />
           )} 
         </div>}
       
