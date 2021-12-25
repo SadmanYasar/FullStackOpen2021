@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, Update}) => {
   const [showdetail, setshowdetail] = useState(false)
   const buttonText = showdetail ? 'Hide' : 'View'
 
@@ -9,7 +9,11 @@ const Blog = ({blog}) => {
   const toggleBlog = () => {
     setshowdetail(!showdetail)
   } 
-  
+
+  const updateLikes = () => {
+    Update({...blog, likes: blog.likes+1})
+  }
+
   return(
   <div className='blog'>
     <div>
@@ -18,7 +22,7 @@ const Blog = ({blog}) => {
 
     <div style={showWhenVisible}>
       <p>URL - {blog.url}</p>
-      <p>likes - {blog.likes} <button>like</button></p>
+      <p>likes - {blog.likes} <button onClick={updateLikes}>like</button></p>
     </div>
   </div> 
 )}

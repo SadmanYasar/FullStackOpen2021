@@ -90,6 +90,39 @@ const App = () => {
       }, 5000);
     }
   }
+
+  const HandleBlogUpdate = async (newBlog) => {
+    try {
+      const updatedBlog = await blogService
+      .updateBlog(newBlog)
+
+      setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
+
+      setmessage({
+        message: `${newBlog.title} has been updated`,
+        type: 'success'
+      })
+
+      setTimeout(() => {
+        setmessage(null)
+      }, 2000);
+
+    } catch (error) {
+      setmessage({
+        message: error.response.data.error,
+        type: 'error'
+      })
+      setTimeout(() => {
+        setmessage(null)
+      }, 5000);
+    }
+
+  }
+
+  const byLikes = (firstItem, secondItem) => {
+    return firstItem.likes - secondItem.likes
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -111,13 +144,13 @@ const App = () => {
             <BlogForm Create={HandleBlogSubmit} />
           </Toggleable>
 
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )} 
-        </div>}
-      
-
-      
+          {blogs
+            .sort(byLikes)
+            .map(blog =>
+              <Blog key={blog.id} blog={blog} Update={HandleBlogUpdate} />
+            )} 
+        </div>
+      }
     </div>
   )
 }
