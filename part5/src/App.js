@@ -72,17 +72,25 @@ const App = () => {
 
       blogFormRef.current.toggleVisibility()
 
+      blog.user = {
+        id: blog.user,
+        username: user.username,
+        name: user.name,
+      }
+
       setmessage({
         message: `Blog ${blog.title} has been added`,
         type: 'success'
       })
+
       setBlogs(blogs.concat(blog))
       setTimeout(() => {
         setmessage(null)
       }, 3000);
     } catch (error) {
+      console.log(error)
       setmessage({
-        message: error.response.data.error,
+        message: error,
         type: 'error'
       })
       setTimeout(() => {
@@ -95,6 +103,8 @@ const App = () => {
     try {
       const updatedBlog = await blogService
       .updateBlog(newBlog)
+
+      updatedBlog.user = newBlog.user
 
       setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
 
@@ -119,6 +129,42 @@ const App = () => {
 
   }
 
+  const HandleBlogDelete = async (blogToDelete) => {
+    try {
+      if (!window.confirm(`Delete ${blogToDelete.title} ?`)) {
+        return
+      }
+      
+      await blogService.deleteBlog(blogToDelete.id)
+
+      setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+        
+      setmessage({
+        message: `Blog ${blogToDelete.title} has been deleted`,
+        type: 'success'
+      })
+
+      setTimeout(() => {
+        setmessage(null)
+      }, 5000);
+      
+    } catch (error) {
+      if (error.response.status === 404) {
+        setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+        return
+      } 
+
+      setmessage({
+        message: error.response.data.error,
+        type: 'error'
+      })
+
+      setTimeout(() => {
+        setmessage(null)
+      }, 5000);
+    }    
+  }
+
   const byLikes = (firstItem, secondItem) => {
     return firstItem.likes - secondItem.likes
   }
@@ -131,7 +177,7 @@ const App = () => {
       {user === null 
       ? <div>
           <p>Login to application</p>
-          <Toggleable buttonLabel='login' closeLabel='Cancel'>
+          <Toggleable buttonLabel='Login'>
             <LoginForm  Login={HandleLogin} />
           </Toggleable>
         </div>
@@ -140,14 +186,18 @@ const App = () => {
           <p>Logged in as {user.name}</p>
           <LogOutButton onClick={HandleLogOut}/>
 
-          <Toggleable buttonLabel='Add a blog' closeLabel='Cancel' ref={blogFormRef}>
+          <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
             <BlogForm Create={HandleBlogSubmit} />
           </Toggleable>
 
           {blogs
             .sort(byLikes)
             .map(blog =>
-              <Blog key={blog.id} blog={blog} Update={HandleBlogUpdate} />
+              <Blog 
+              key={blog.id} 
+              blog={blog} 
+              Update={HandleBlogUpdate}
+              Delete={HandleBlogDelete}  />
             )} 
         </div>
       }
