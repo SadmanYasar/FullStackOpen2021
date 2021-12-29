@@ -29,7 +29,7 @@ const App = () => {
       setuser(user)
       blogService.setToken(user.token)
     }
-      
+
   }, [])
 
 
@@ -40,19 +40,19 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setuser(user)
-      
-      
+
+
     } catch (error) {
       setmessage({
-        message: 'Wrong credentials', 
+        message: 'Wrong credentials',
         type: 'error'
       })
       setTimeout(() => {
         setmessage(null)
-      }, 5000);
+      }, 5000)
     }
   }
 
@@ -86,7 +86,7 @@ const App = () => {
       setBlogs(blogs.concat(blog))
       setTimeout(() => {
         setmessage(null)
-      }, 3000);
+      }, 3000)
     } catch (error) {
       console.log(error)
       setmessage({
@@ -95,14 +95,14 @@ const App = () => {
       })
       setTimeout(() => {
         setmessage(null)
-      }, 5000);
+      }, 5000)
     }
   }
 
   const HandleBlogUpdate = async (newBlog) => {
     try {
       const updatedBlog = await blogService
-      .updateBlog(newBlog)
+        .updateBlog(newBlog)
 
       updatedBlog.user = newBlog.user
 
@@ -115,7 +115,7 @@ const App = () => {
 
       setTimeout(() => {
         setmessage(null)
-      }, 2000);
+      }, 2000)
 
     } catch (error) {
       setmessage({
@@ -124,7 +124,7 @@ const App = () => {
       })
       setTimeout(() => {
         setmessage(null)
-      }, 5000);
+      }, 5000)
     }
 
   }
@@ -134,11 +134,11 @@ const App = () => {
       if (!window.confirm(`Delete ${blogToDelete.title} ?`)) {
         return
       }
-      
+
       await blogService.deleteBlog(blogToDelete.id)
 
       setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
-        
+
       setmessage({
         message: `Blog ${blogToDelete.title} has been deleted`,
         type: 'success'
@@ -146,13 +146,13 @@ const App = () => {
 
       setTimeout(() => {
         setmessage(null)
-      }, 5000);
-      
+      }, 5000)
+
     } catch (error) {
       if (error.response.status === 404) {
         setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
         return
-      } 
+      }
 
       setmessage({
         message: error.response.data.error,
@@ -161,8 +161,8 @@ const App = () => {
 
       setTimeout(() => {
         setmessage(null)
-      }, 5000);
-    }    
+      }, 5000)
+    }
   }
 
   const byLikes = (firstItem, secondItem) => {
@@ -174,15 +174,15 @@ const App = () => {
       <h2>Blogs</h2>
       <Notification message={message}/>
 
-      {user === null 
-      ? <div>
+      {user === null
+        ? <div>
           <p>Login to application</p>
           <Toggleable buttonLabel='Login'>
             <LoginForm  Login={HandleLogin} />
           </Toggleable>
         </div>
-      
-      : <div>
+
+        : <div>
           <p>Logged in as {user.name}</p>
           <LogOutButton onClick={HandleLogOut}/>
 
@@ -193,12 +193,12 @@ const App = () => {
           {blogs
             .sort(byLikes)
             .map(blog =>
-              <Blog 
-              key={blog.id} 
-              blog={blog} 
-              Update={HandleBlogUpdate}
-              Delete={HandleBlogDelete}  />
-            )} 
+              <Blog
+                key={blog.id}
+                blog={blog}
+                Update={HandleBlogUpdate}
+                Delete={HandleBlogDelete}  />
+            )}
         </div>
       }
     </div>

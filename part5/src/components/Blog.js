@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({blog, Update, Delete}) => {
+const Blog = ({ blog, Update, Delete }) => {
   const [showdetail, setshowdetail] = useState(false)
   const buttonText = showdetail ? 'Hide' : 'View'
 
-  const showWhenVisible = {display: showdetail ? '' : 'none'}
+  const showWhenVisible = { display: showdetail ? '' : 'none' }
 
   const toggleBlog = () => {
     setshowdetail(!showdetail)
-  } 
+  }
 
   const updateLikes = () => {
-    Update({...blog, likes: blog.likes+1})
+    Update({ ...blog, likes: blog.likes+1 })
   }
 
   const deleteBlog = () => {
@@ -23,23 +23,23 @@ const Blog = ({blog, Update, Delete}) => {
   const userlogged = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
 
   return(
-  <div className='blog'>
-    <div>
-      <p>{blog.title} - {blog.author} <button onClick={toggleBlog}>{buttonText}</button></p>
-    </div>
+    <div className='blog'>
+      <div>
+        <p>{blog.title} - {blog.author} <button onClick={toggleBlog}>{buttonText}</button></p>
+      </div>
 
-    <div style={showWhenVisible}>
-      <p>URL - {blog.url}</p>
-      <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
-      {username === userlogged.username
-      ? <>
-        <button onClick={deleteBlog}>Delete</button>
-        </>
-      : <></>}
-       
+      <div style={showWhenVisible}>
+        <p>URL - {blog.url}</p>
+        <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
+        {username === userlogged.username
+          ? <>
+            <button onClick={deleteBlog}>Delete</button>
+          </>
+          : <></>}
+
+      </div>
     </div>
-  </div> 
-)}
+  )}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
