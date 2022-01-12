@@ -28,7 +28,7 @@ const Blog = ({ blog, Update, Delete }) => {
         <p>{blog.title} - {blog.author} <button onClick={toggleBlog}>{buttonText}</button></p>
       </div>
 
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className='togglable'>
         <p>URL - {blog.url}</p>
         <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
         {username === userlogged.username
