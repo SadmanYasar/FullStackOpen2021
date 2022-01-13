@@ -5,29 +5,31 @@ import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
 describe('<Blog>', () => {
+  const blog = {
+    title: 'This is a title',
+    author: 'SY17',
+    url: 'www.rickroll.com',
+    likes: 10,
+    user: {
+      username: 'username'
+    }
+  }
+
   let component
+  let stubUpdate = jest.fn()
+  let stubDelete = jest.fn()
 
   beforeEach(() => {
-    const blog = {
-      title: 'This is a title',
-      author: 'SY17',
-      url: 'www.rickroll.com',
-      likes: 10,
-      user: {
-        username: 'username'
-      }
-    }
     window.localStorage.setItem(
       'loggedBlogAppUser', JSON.stringify({ username: 'username' })
     )
     component = render(
-      <Blog blog={blog} Update={() => jest.fn()} Delete={() => jest.fn}/>
+      <Blog blog={blog} Update={stubUpdate} Delete={stubDelete}/>
     )
   }
   )
-  test('shows title and author only initially', () => {
-    console.log(prettyDOM(component.container))
 
+  test('shows title and author only initially', () => {
     expect(component.container).toHaveTextContent('This is a title')
     expect(component.container).toHaveTextContent('SY17')
 
@@ -36,17 +38,8 @@ describe('<Blog>', () => {
   })
 
   test('shows url and likes after view button clicked', () => {
-    //Make a test which checks that the blog's url and number of likes are shown when the button controlling the shown details has been clicked.
-
-    //SOLUTION
-    //get button with value view
-    //click it
-    //check for url and likes
-
     const button = component.getByText('View')
     fireEvent.click(button)
-
-    console.log(prettyDOM(component.container))
 
     const div = component.container.querySelector('.togglable')
     expect(div).not.toHaveStyle('display: none')
@@ -54,6 +47,19 @@ describe('<Blog>', () => {
     expect(component.container).toHaveTextContent('10')
   })
 
+  test('if liked twice, event handler called twice', () => {
+    const viewButton = component.getByText('View')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+
+    expect(stubUpdate.mock.calls).toHaveLength(1)
+
+    fireEvent.click(likeButton)
+    expect(stubUpdate.mock.calls).toHaveLength(2)
+    console.log(prettyDOM())
+  })
 })
 
 afterAll(() => {
