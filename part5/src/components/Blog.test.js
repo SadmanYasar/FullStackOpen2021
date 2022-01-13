@@ -1,7 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
 describe('<Blog>', () => {
@@ -16,15 +15,18 @@ describe('<Blog>', () => {
   }
 
   let component
-  let stubUpdate = jest.fn()
-  let stubDelete = jest.fn()
+  let Update
+  let Delete
 
   beforeEach(() => {
     window.localStorage.setItem(
       'loggedBlogAppUser', JSON.stringify({ username: 'username' })
     )
+
+    Update = jest.fn()
+    Delete = jest.fn()
     component = render(
-      <Blog blog={blog} Update={stubUpdate} Delete={stubDelete}/>
+      <Blog blog={blog} Update={Update} Delete={Delete}/>
     )
   }
   )
@@ -54,11 +56,10 @@ describe('<Blog>', () => {
     const likeButton = component.getByText('Like')
     fireEvent.click(likeButton)
 
-    expect(stubUpdate.mock.calls).toHaveLength(1)
+    expect(Update.mock.calls).toHaveLength(1)
 
     fireEvent.click(likeButton)
-    expect(stubUpdate.mock.calls).toHaveLength(2)
-    console.log(prettyDOM())
+    expect(Update.mock.calls).toHaveLength(2)
   })
 })
 
