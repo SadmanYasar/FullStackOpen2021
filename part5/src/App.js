@@ -177,9 +177,7 @@ const App = () => {
       {user === null
         ? <div>
           <p>Login to application</p>
-          <Toggleable buttonLabel='Login'>
-            <LoginForm  Login={HandleLogin} />
-          </Toggleable>
+          <LoginForm  Login={HandleLogin} />
         </div>
 
         : <div>

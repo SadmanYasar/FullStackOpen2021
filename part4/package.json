@@ -9,7 +9,8 @@
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "test-api": "npm test -- tests/blog_api.test.js",
     "test-user": "npm test -- tests/user_api.test.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:test": "NODE_ENV=test node index.js"
   },
   "author": "SY17",
   "license": "ISC",
