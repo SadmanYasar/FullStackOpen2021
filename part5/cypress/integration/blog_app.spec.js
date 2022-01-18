@@ -78,5 +78,59 @@ describe('Blog app', function() {
       cy.get('#notification').contains('Blog testtitle has been deleted')
       cy.get('html').should('not.contain', 'testtitle - testauthor')
     })
+
+    describe('and many blogs', function(){
+      it.only('blogs are ordered according to likes', function(){
+        cy.newBlog({
+          title: 'test1',
+          author: 'testauthor',
+          url: 'http://test.com./test1'
+        })
+
+        cy.newBlog({
+          title: 'test2',
+          author: 'testauthor',
+          url: 'http://test.com./test2'
+        })
+
+        cy.newBlog({
+          title: 'test3',
+          author: 'testauthor',
+          url: 'http://test.com./test3'
+        })
+
+        cy.contains('test1').parent().parent().as('blog1')
+        cy.contains('test2').parent().parent().as('blog2')
+        cy.contains('test3').parent().parent().as('blog3')
+
+        cy.get('@blog1').contains('View').click()
+        cy.get('@blog2').contains('View').click()
+        cy.get('@blog3').contains('View').click()
+
+        cy.get('@blog1').contains('Like').as('like1')
+        cy.get('@blog2').contains('Like').as('like2')
+        cy.get('@blog3').contains('Like').as('like3')
+
+        cy.get('@like1').click()
+        cy.wait(500)
+        cy.get('@like2').click()
+        cy.wait(500)
+        cy.get('@like2').click()
+        cy.wait(500)
+        cy.get('@like3').click()
+        cy.wait(500)
+        cy.get('@like3').click()
+        cy.wait(500)
+        cy.get('@like3').click()
+        cy.wait(500)
+
+        cy.get('.blog').then(blogs => {
+          cy.wrap(blogs[0]).contains('3')
+          cy.wrap(blogs[1]).contains('2')
+          cy.wrap(blogs[2]).contains('1')
+        })
+      })
+    })
   })
+
 })

@@ -166,7 +166,7 @@ const App = () => {
   }
 
   const byLikes = (firstItem, secondItem) => {
-    return firstItem.likes - secondItem.likes
+    return secondItem.likes - firstItem.likes
   }
 
   return (
