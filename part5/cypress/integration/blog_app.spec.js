@@ -65,5 +65,18 @@ describe('Blog app', function() {
       cy.get('.blog').contains('Like').click()
       cy.get('.blog').should('contain', '1')
     })
+
+    it('user who created blog can delete it', function(){
+      cy.newBlog({
+        title: 'testtitle',
+        author: 'testauthor',
+        url: 'http://localhost:3000/'
+      })
+
+      cy.get('.blog').contains('View').click()
+      cy.get('.blog').contains('Delete').click()
+      cy.get('#notification').contains('Blog testtitle has been deleted')
+      cy.get('html').should('not.contain', 'testtitle - testauthor')
+    })
   })
 })
