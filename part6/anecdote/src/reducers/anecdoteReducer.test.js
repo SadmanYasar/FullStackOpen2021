@@ -1,5 +1,5 @@
-import deepFreeze from 'deep-freeze';
-import anecdoteReducer from './anecdoteReducer';
+import deepFreeze from 'deep-freeze'
+import anecdoteReducer from './anecdoteReducer'
 
 describe('Anecdote reducer', () => {
     test('sets undefined state to initialstate', () => {
@@ -11,7 +11,7 @@ describe('Anecdote reducer', () => {
         const newState = anecdoteReducer(undefined, action)
         expect(newState).toHaveLength(6)
         expect(newState[0].content).toContain('If it hurts, do it more often')
-    });
+    })
 
     test('can vote', () => {
         const state = [
@@ -36,7 +36,7 @@ describe('Anecdote reducer', () => {
         deepFreeze(state)
         const newState = anecdoteReducer(state, action)
         expect(newState[0].votes).toBe(1)
-    });
+    })
 
     test('can add new anecdote', () => {
         const state = [
@@ -65,5 +65,5 @@ describe('Anecdote reducer', () => {
         const newState = anecdoteReducer(state, action)
         expect(newState).toHaveLength(3)
         expect(newState).toContain(action.data)
-    });
-});
+    })
+})
