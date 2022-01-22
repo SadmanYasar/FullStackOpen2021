@@ -37,4 +37,33 @@ describe('Anecdote reducer', () => {
         const newState = anecdoteReducer(state, action)
         expect(newState[0].votes).toBe(1)
     });
+
+    test('can add new anecdote', () => {
+        const state = [
+            {
+                content: 'first anecdote',
+                id: 1,
+                votes: 0
+            },
+            {
+                content: 'second anecdote',
+                id: 2,
+                votes: 0
+            }
+        ]
+
+        const action = {
+            type: 'NEW_ANECDOTE',
+            data: {
+                content: 'third anecdote',
+                id: 3,
+                votes: 10
+            }
+        }
+        
+        deepFreeze(state)
+        const newState = anecdoteReducer(state, action)
+        expect(newState).toHaveLength(3)
+        expect(newState).toContain(action.data)
+    });
 });
