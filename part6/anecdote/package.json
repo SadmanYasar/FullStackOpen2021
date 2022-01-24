@@ -18,7 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "testCI": "CI=true npm test"
+    "testCI": "CI=true npm test",
+    "server": "json-server -p3001 --watch db.json"
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +41,7 @@
   },
   "devDependencies": {
     "deep-freeze": "^0.0.1",
+    "json-server": "^0.17.0",
     "redux-devtools-extension": "^2.13.9"
   }
 }
