@@ -18,7 +18,14 @@ const Anecdote = ({anecdote, handleClick}) => {
 }
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => state.anecdotes)
+    const anecdotes = useSelector(state => {
+      if (state.filter === 'ALL' || '') {
+        return state.anecdotes
+      }
+
+      const re = new RegExp(state.filter, 'i')
+      return state.anecdotes.filter(a => re.test(a.content))
+    })
     const dispatch = useDispatch()
 
     const byVotes = (prevVal, currentVal) => {
