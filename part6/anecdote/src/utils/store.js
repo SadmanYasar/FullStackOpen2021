@@ -4,6 +4,8 @@ import notificationReducer from '../reducers/notificationReducer'
 import filterReducer from '../reducers/filterReducer'
 
 import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+import { applyMiddleware } from 'redux'
 
 const reducer = combineReducers(
     {
@@ -13,6 +15,11 @@ const reducer = combineReducers(
     }
 )
 
-const store = createStore(reducer, composeWithDevTools())
+const store = createStore(
+    reducer, 
+    composeWithDevTools(
+        applyMiddleware(thunk)
+    )
+)
 
 export default store
