@@ -9,10 +9,15 @@ const getAll = async () => {
 
 const createNew = async (content) => {
     const object = { content, votes: 0 }
-    const result = await axios.post(baseURL, object)
-    return result.data
+    const response = await axios.post(baseURL, object)
+    return response.data
 }
 
-const anecdoteService = { getAll, createNew }
+const updateAnecdote = async (anecdote) => {
+    const response = await axios.put(`${baseURL}/${anecdote.id}`, anecdote )
+    return response.data
+}
+
+const anecdoteService = { getAll, createNew, updateAnecdote }
 
 export default anecdoteService
