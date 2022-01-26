@@ -1,4 +1,4 @@
-import anecdoteService from "../services/anecdotes";
+import anecdoteService from "../services/anecdotes"
 
 const anecdoteReducer = (state = [], action) => {
   switch (action.type) {
