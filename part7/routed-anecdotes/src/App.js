@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 
 import 
 { 
-  Link,
-  Route,
+  BrowserRouter as Router,
   Switch,
+  Route,
+  Link,
   Redirect,
+  useRouteMatch,
   useHistory,
-  useRouteMatch
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -23,11 +25,25 @@ const Menu = () => {
   )
 }
 
+const Anecdote = ({ anecdote }) => {
+  return(
+    <div>
+      <h2>{anecdote.content}</h2>
+      <p>has {anecdote.votes} votes</p>
+      <p>for more info see {anecdote.info}</p>
+    </div>
+  )
+}
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => 
+        <li key={anecdote.id} >
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
+      )}
     </ul>
   </div>
 )
@@ -121,6 +137,11 @@ const App = () => {
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
 
+  const match = useRouteMatch('/anecdotes/:id')
+  const anecdote = match
+    ? anecdoteById(match.params.id)
+    : null
+
   const vote = (id) => {
     const anecdote = anecdoteById(id)
 
@@ -138,15 +159,19 @@ const App = () => {
       <Menu />
       
       <Switch>
-        <Route path='/about'>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdote={anecdote} />
+        </Route>
+
+        <Route path="/about">
           <About />
         </Route>
 
-        <Route path='/create'>
+        <Route path="/create">
           <CreateNew addNew={addNew} />
         </Route>
 
-        <Route path='/'>
+        <Route path="/">
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
       </Switch>
@@ -156,4 +181,14 @@ const App = () => {
   )
 }
 
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>, 
+  document.getElementById('root')
+)
+
+
 export default App;
+
+
