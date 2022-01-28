@@ -40,16 +40,16 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
-  const timeOutId = useRef(null)
+  const [timeoutId, settimeoutId] = useState(null)
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`${anecdote.content} has been created`)
-    clearTimeout(timeOutId)
-    timeOutId.current = setTimeout(() => {
+    clearTimeout(timeoutId)
+    settimeoutId(setTimeout(() => {
       setNotification('')
-    }, 10000)
+    }, 10000))
   }
 
   const anecdoteById = (id) =>
