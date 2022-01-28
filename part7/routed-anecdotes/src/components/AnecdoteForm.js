@@ -3,8 +3,8 @@ import { useField } from '../hooks/index'
 
 const CreateNew = (props) => {
     const content = useField('text')
-    const author = useField('text')
-    const info = useField('text')
+    const author  = useField('text')
+    const info  = useField('text')
   
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -15,24 +15,31 @@ const CreateNew = (props) => {
         votes: 0
       })
     }
-  
+
+    const reset = () => {
+      content.reset()
+      author.reset()
+      info.reset()
+    }
+
     return (
       <div>
         <h2>create a new anecdote</h2>
         <form onSubmit={handleSubmit}>
           <div>
             content
-            <input {...content}/>
+            <input {...{...content, reset: null}}/>
           </div>
           <div>
             author
-            <input {...author} />
+            <input {...{...author, reset: null}} />
           </div>
           <div>
             url for more info
-            <input {...info} />
+            <input {...{...info, reset: null}} />
           </div>
-          <button>create</button>
+          <button type='submit'>create</button>
+          <button type='reset' onClick={reset}>reset</button>
         </form>
       </div>
     )
