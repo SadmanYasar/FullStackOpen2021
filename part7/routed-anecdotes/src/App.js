@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import 
 { 
   Route,
@@ -40,16 +40,16 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
-  const [timeOutId, settimeOutId] = useState(null)
+  const timeOutId = useRef(null)
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setNotification(`${anecdote.content} has been created`)
     clearTimeout(timeOutId)
-    settimeOutId(setTimeout(() => {
+    timeOutId.current = setTimeout(() => {
       setNotification('')
-    }, 10000))
+    }, 10000)
   }
 
   const anecdoteById = (id) =>
