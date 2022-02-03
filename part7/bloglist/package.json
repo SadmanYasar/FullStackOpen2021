@@ -22,7 +22,8 @@
     "eject": "react-scripts eject",
     "eslint": "eslint .",
     "testCI": "CI=true npm test",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "server": "json-server -p3003 --watch db.json"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +51,7 @@
     "deep-freeze": "^0.0.1",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest": "^25.3.2",
+    "json-server": "^0.17.0",
     "redux-devtools-extension": "^2.13.9"
   }
 }

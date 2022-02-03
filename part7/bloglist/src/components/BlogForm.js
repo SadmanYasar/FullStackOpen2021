@@ -50,7 +50,7 @@ const BlogForm = ({ Create }) => {
             URL:
         <input
           id='url'
-          type="url"
+          type="text"
           name="URL"
           value={url}
           onChange={HandleURL}

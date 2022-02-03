@@ -1,0 +1,13 @@
+{
+    "api": {
+        "blogs": [
+            {
+                "id": 1,
+                "author": "SY17",
+                "title": "hello world",
+                "url": "lmao.com",
+                "likes": 10
+            }
+        ]
+    }
+}

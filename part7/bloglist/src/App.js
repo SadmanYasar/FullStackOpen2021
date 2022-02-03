@@ -7,12 +7,15 @@ import BlogForm from './components/BlogForm'
 import LogOutButton from './components/LogOutButton'
 import blogService from './services/blogs'
 import loginService from './services/login'
+//import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setuser] = useState(null)
-  const [message, setmessage] = useState(null)
-
+  //const [message, setmessage] = useState(null)
+  const dispatch = useDispatch()
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -42,13 +45,14 @@ const App = () => {
       setuser(user)
 
     } catch (error) {
-      setmessage({
+      /* setmessage({
         message: 'Wrong credentials',
         type: 'error'
       })
       setTimeout(() => {
         setmessage(null)
-      }, 5000)
+      }, 5000) */
+      dispatch(setNotification('Wrong credentials', 5, false))
     }
   }
 
@@ -74,25 +78,27 @@ const App = () => {
         name: user.name,
       }
 
-      setmessage({
+      /* setmessage({
         message: `Blog ${blog.title} has been added`,
         type: 'success'
-      })
+      }) */
 
       setBlogs(blogs.concat(blog))
-      setTimeout(() => {
+      /* setTimeout(() => {
         setmessage(null)
-      }, 3000)
+      }, 3000) */
+      dispatch(setNotification(`Blog ${blog.title} has been added`, 3, false))
 
     } catch (error) {
       console.log(error)
-      setmessage({
+      /* setmessage({
         message: error,
         type: 'error'
       })
       setTimeout(() => {
         setmessage(null)
-      }, 5000)
+      }, 5000) */
+      dispatch(setNotification(error, 5, true))
     }
   }
 
@@ -105,23 +111,25 @@ const App = () => {
 
       setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
 
-      setmessage({
+      /* setmessage({
         message: `${newBlog.title} has been updated`,
         type: 'success'
       })
 
       setTimeout(() => {
         setmessage(null)
-      }, 2000)
+      }, 2000) */
+      dispatch(setNotification(`${newBlog.title} has been updated`, 2, false))
 
     } catch (error) {
-      setmessage({
+      /* setmessage({
         message: error.response.data.error,
         type: 'error'
       })
       setTimeout(() => {
         setmessage(null)
-      }, 5000)
+      }, 5000) */
+      dispatch(setNotification(error.response.data.error, 5, true))
     }
   }
 
@@ -135,14 +143,19 @@ const App = () => {
 
       setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
 
-      setmessage({
+      /* setmessage({
         message: `Blog ${blogToDelete.title} has been deleted`,
         type: 'success'
       })
 
       setTimeout(() => {
         setmessage(null)
-      }, 5000)
+      }, 5000) */
+      dispatch(setNotification(
+        `Blog ${blogToDelete.title} has been deleted`,
+        5,
+        false
+      ))
 
     } catch (error) {
       if (error.response.status === 404) {
@@ -150,14 +163,15 @@ const App = () => {
         return
       }
 
-      setmessage({
+      /* setmessage({
         message: error.response.data.error,
         type: 'error'
       })
 
       setTimeout(() => {
         setmessage(null)
-      }, 5000)
+      }, 5000) */
+      dispatch(setNotification(error.response.data.error, 5, true))
     }
   }
 
@@ -168,7 +182,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification message={message}/>
+      <Notification/>
 
       {user === null
         ? <div>
