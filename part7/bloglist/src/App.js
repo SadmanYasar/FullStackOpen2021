@@ -8,7 +8,6 @@ import LogOutButton from './components/LogOutButton'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setuser] = useState(null)
@@ -32,8 +31,6 @@ const App = () => {
 
   }, [])
 
-
-
   const HandleLogin = async (credentials) => {
     try {
       const user = await loginService.login(credentials)
@@ -43,7 +40,6 @@ const App = () => {
       )
       blogService.setToken(user.token)
       setuser(user)
-
 
     } catch (error) {
       setmessage({
@@ -87,6 +83,7 @@ const App = () => {
       setTimeout(() => {
         setmessage(null)
       }, 3000)
+
     } catch (error) {
       console.log(error)
       setmessage({
@@ -126,7 +123,6 @@ const App = () => {
         setmessage(null)
       }, 5000)
     }
-
   }
 
   const HandleBlogDelete = async (blogToDelete) => {
