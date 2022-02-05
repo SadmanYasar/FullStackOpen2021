@@ -60,20 +60,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
-  const HandleBlogUpdate = async (newBlog) => {
-    try {
-      const updatedBlog = await blogService
-        .updateBlog(newBlog)
-
-      updatedBlog.user = newBlog.user
-      //setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
-      dispatch(setNotification(`${newBlog.title} has been updated`, 2, false))
-
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, 5, true))
-    }
-  }
-
   const HandleBlogDelete = async (blogToDelete) => {
     try {
       if (!window.confirm(`Delete ${blogToDelete.title} ?`)) {
@@ -128,7 +114,6 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                Update={HandleBlogUpdate}
                 Delete={HandleBlogDelete}
                 own={blog.user.username === user.username}  />
             )}

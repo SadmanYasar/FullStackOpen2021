@@ -9,6 +9,17 @@ const blogReducer = (state = [], action) => {
   case 'NEW_BLOG':
     return [...state, action.data]
 
+  case 'LIKE': {
+    const blogToLike = state.find(b => b.id === action.data.id)
+    const updatedBlog = {
+      ...blogToLike,
+      likes: blogToLike.likes + 1
+    }
+
+    return blogToLike
+      ? state.map(b => b.id === action.data.id ? updatedBlog : b)
+      : state
+  }
   default:
     return state
   }
@@ -41,6 +52,27 @@ export const addBlog = (blog, user) => {
 
     } catch (error) {
       dispatch(setNotification(`Cannot add blog ${blog.title}`, 5, true))
+    }
+  }
+}
+
+export const like = (blog) => {
+  return async (dispatch) => {
+    try {
+      const updatedBlog = await blogService.updateBlog({
+        ...blog,
+        likes: blog.likes + 1
+      })
+
+      updatedBlog.user = blog.user
+      dispatch({
+        type: 'LIKE',
+        data: updatedBlog
+      })
+      dispatch(setNotification(`${blog.title} has been updated`, 2, false))
+
+    } catch (error) {
+      dispatch(setNotification(error.response.data.error, 5, true))
     }
   }
 }

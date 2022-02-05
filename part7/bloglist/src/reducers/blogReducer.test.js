@@ -12,30 +12,34 @@ describe('Blog reducer', () => {
     expect(newState).toHaveLength(0)
   })
 
-  /* test('can vote', () => {
+  test('can like', () => {
     const state = [
       {
-        content: 'first anecdote',
         id: 1,
-        votes: 0
+        title: 'first blog',
+        author: 'sy17',
+        url: 'https://w3.com',
+        likes: 0
       },
       {
-        content: 'second anecdote',
         id: 2,
-        votes: 0
+        title: 'second blog',
+        author: 'sy17',
+        url: 'https://w3.com',
+        likes: 0
       }
     ]
     const action = {
-      type: 'VOTE',
+      type: 'LIKE',
       data: {
         id: 1
       }
     }
 
     deepFreeze(state)
-    const newState = anecdoteReducer(state, action)
-    expect(newState[0].votes).toBe(1)
-  }) */
+    const newState = blogReducer(state, action)
+    expect(newState[0].likes).toBe(1)
+  })
 
   test('can add new blog', () => {
     const state = [
