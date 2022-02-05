@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { like } from '../reducers/blogReducer'
+import { like, deleteBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, Delete, own }) => {
+const Blog = ({ blog, own }) => {
   const [showdetail, setshowdetail] = useState(false)
   const buttonText = showdetail ? 'Hide' : 'View'
 
@@ -19,8 +19,8 @@ const Blog = ({ blog, Delete, own }) => {
     dispatch(like(blog))
   }
 
-  const deleteBlog = () => {
-    Delete(blog)
+  const removeBlog = () => {
+    dispatch(deleteBlog(blog))
   }
 
   return(
@@ -32,14 +32,13 @@ const Blog = ({ blog, Delete, own }) => {
       <div style={showWhenVisible} className='togglable'>
         <p>URL - {blog.url}</p>
         <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
-        {own && <button onClick={deleteBlog}>Delete</button>}
+        {own && <button onClick={removeBlog}>Delete</button>}
       </div>
     </div>
   )}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  Delete: PropTypes.func.isRequired,
   own: PropTypes.bool.isRequired
 }
 

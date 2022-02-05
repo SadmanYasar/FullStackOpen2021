@@ -60,31 +60,6 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
-  const HandleBlogDelete = async (blogToDelete) => {
-    try {
-      if (!window.confirm(`Delete ${blogToDelete.title} ?`)) {
-        return
-      }
-
-      await blogService.deleteBlog(blogToDelete.id)
-
-      //setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
-      dispatch(setNotification(
-        `Blog ${blogToDelete.title} has been deleted`,
-        5,
-        false
-      ))
-
-    } catch (error) {
-      if (error.response.status === 404) {
-        //setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
-        return
-      }
-
-      dispatch(setNotification(error.response.data.error, 5, true))
-    }
-  }
-
   const byLikes = (firstItem, secondItem) => {
     return secondItem.likes - firstItem.likes
   }
@@ -114,7 +89,6 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                Delete={HandleBlogDelete}
                 own={blog.user.username === user.username}  />
             )}
         </div>

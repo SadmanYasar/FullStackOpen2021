@@ -41,6 +41,38 @@ describe('Blog reducer', () => {
     expect(newState[0].likes).toBe(1)
   })
 
+  test('can delete', () => {
+    const state = [
+      {
+        id: 1,
+        title: 'first blog',
+        author: 'sy17',
+        url: 'https://w3.com',
+        likes: 0
+      },
+      {
+        id: 2,
+        title: 'second blog',
+        author: 'sy17',
+        url: 'https://w3.com',
+        likes: 0
+      }
+    ]
+
+    const action = {
+      type: 'DELETE',
+      data: {
+        id: 2
+      }
+    }
+
+    deepFreeze(state)
+    const newState = blogReducer(state, action)
+
+    expect(newState).toHaveLength(1)
+    expect(newState).not.toContain(state[1])
+  })
+
   test('can add new blog', () => {
     const state = [
       {
@@ -61,13 +93,7 @@ describe('Blog reducer', () => {
 
     const action = {
       type: 'NEW_BLOG',
-      data: {
-        id: 3,
-        title: 'third blog',
-        author: 'sy19',
-        url: 'www.someurl.com',
-        likes: 10
-      }
+      data: 3
     }
 
     deepFreeze(state)

@@ -20,6 +20,10 @@ const blogReducer = (state = [], action) => {
       ? state.map(b => b.id === action.data.id ? updatedBlog : b)
       : state
   }
+
+  case 'DELETE':
+    return state.filter(b => b.id !== String(action.data))
+
   default:
     return state
   }
@@ -73,6 +77,39 @@ export const like = (blog) => {
 
     } catch (error) {
       dispatch(setNotification(error.response.data.error, 5, true))
+    }
+  }
+}
+
+export const deleteBlog = (blog) => {
+  return async (dispatch) => {
+    try {
+      await blogService.deleteBlog(blog.id)
+
+      dispatch({
+        type: 'DELETE',
+        data: blog.id
+      })
+      dispatch(setNotification(
+        `Blog ${blog.title} has been deleted`,
+        5,
+        false
+      ))
+
+    } catch (error) {
+      if (error.response.status === 404) {
+        dispatch({
+          type: 'DELETE',
+          data: blog.id
+        })
+        return
+      }
+
+      dispatch(setNotification(
+        `Could not delete blog ${blog.title}`,
+        5,
+        true)
+      )
     }
   }
 }
