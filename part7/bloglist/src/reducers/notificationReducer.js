@@ -3,7 +3,7 @@ const notificationReducer = (state = {}, action) => {
   case 'SET_NOTIFICATION':
     return { message: action.message, isError: action.isError }
   case 'REMOVE_NOTIFICATION':
-    return { message: action.message, isError: false }
+    return { ...state, message: action.message }
   default:
     return state
   }
@@ -24,7 +24,6 @@ export const setNotification = (message, timeInSeconds, isError) => {
       dispatch(removeNotification())
     }, timeInSeconds * 1000)
   }
-
 }
 
 export const removeNotification = () => {

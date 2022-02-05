@@ -42,7 +42,7 @@ describe('Blog app', function() {
       cy.login({ username: 'Carl', password: '1234' })
     })
 
-    it('A blog can be created', function() {
+    it.only('A blog can be created', function() {
       cy.contains('Add a blog').click()
       cy.get('#title').type('testtitle')
       cy.get('#author').type('testauthor')
@@ -112,17 +112,17 @@ describe('Blog app', function() {
         cy.get('@blog3').contains('Like').as('like3')
 
         cy.get('@like1').click()
-        cy.wait(500)
+        cy.wait(1000)
         cy.get('@like2').click()
-        cy.wait(500)
+        cy.wait(1000)
         cy.get('@like2').click()
-        cy.wait(500)
+        cy.wait(1000)
         cy.get('@like3').click()
-        cy.wait(500)
+        cy.wait(1000)
         cy.get('@like3').click()
-        cy.wait(500)
+        cy.wait(1000)
         cy.get('@like3').click()
-        cy.wait(500)
+        cy.wait(1000)
 
         cy.get('.blog').then(blogs => {
           cy.wrap(blogs[0]).contains('3')

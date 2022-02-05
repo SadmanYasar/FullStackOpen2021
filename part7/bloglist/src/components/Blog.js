@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, Update, Delete }) => {
+const Blog = ({ blog, Update, Delete, own }) => {
   const [showdetail, setshowdetail] = useState(false)
   const buttonText = showdetail ? 'Hide' : 'View'
 
@@ -19,9 +19,6 @@ const Blog = ({ blog, Update, Delete }) => {
     Delete(blog)
   }
 
-  const username = blog.user.username
-  const userlogged = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
-
   return(
     <div className='blog'>
       <div>
@@ -31,12 +28,7 @@ const Blog = ({ blog, Update, Delete }) => {
       <div style={showWhenVisible} className='togglable'>
         <p>URL - {blog.url}</p>
         <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
-        {username === userlogged.username
-          ? <>
-            <button onClick={deleteBlog}>Delete</button>
-          </>
-          : <></>}
-
+        {own && <button onClick={deleteBlog}>Delete</button>}
       </div>
     </div>
   )}
@@ -44,7 +36,8 @@ const Blog = ({ blog, Update, Delete }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   Update: PropTypes.func.isRequired,
-  Delete: PropTypes.func.isRequired
+  Delete: PropTypes.func.isRequired,
+  own: PropTypes.bool.isRequired
 }
 
 export default Blog

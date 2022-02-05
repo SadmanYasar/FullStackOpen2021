@@ -26,7 +26,7 @@ describe('<Blog>', () => {
     Update = jest.fn()
     Delete = jest.fn()
     component = render(
-      <Blog blog={blog} Update={Update} Delete={Delete}/>
+      <Blog blog={blog} Update={Update} Delete={Delete} own={true}/>
     )
   }
   )
