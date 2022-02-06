@@ -1,5 +1,6 @@
 import blogService from '../services/blogs'
 import { setNotification } from './notificationReducer'
+import { logout } from './userReducer'
 
 const blogReducer = (state = [], action) => {
   switch (action.type) {
@@ -40,6 +41,11 @@ export const initializeBlogs = () => {
 export const addBlog = (blog, user) => {
   return async (dispatch) => {
     try {
+
+      if (!window.localStorage.getItem('loggedBlogAppUser')) {
+        return dispatch(logout())
+      }
+
       const newBlog = await blogService.create(blog)
       newBlog.user = {
         id: newBlog.user,
@@ -61,6 +67,11 @@ export const addBlog = (blog, user) => {
 export const like = (blog) => {
   return async (dispatch) => {
     try {
+
+      if (!window.localStorage.getItem('loggedBlogAppUser')) {
+        return dispatch(logout())
+      }
+
       const updatedBlog = await blogService.updateBlog({
         ...blog,
         likes: blog.likes + 1
@@ -82,6 +93,11 @@ export const like = (blog) => {
 export const deleteBlog = (blog) => {
   return async (dispatch) => {
     try {
+
+      if (!window.localStorage.getItem('loggedBlogAppUser')) {
+        return dispatch(logout())
+      }
+
       await blogService.deleteBlog(blog.id)
 
       dispatch({

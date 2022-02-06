@@ -5,16 +5,12 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import LogOutButton from './components/LogOutButton'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
-import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initUser } from './reducers/userReducer'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
-  //const [user, setuser] = useState(null)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const blogFormRef = useRef()
@@ -27,35 +23,6 @@ const App = () => {
     dispatch(initUser())
   }, [])
 
-  const HandleLogin = async (credentials) => {
-    try {
-      const user = await loginService.login(credentials)
-      window.localStorage.setItem(
-        'loggedBlogAppUser', JSON.stringify(user)
-      )
-      blogService.setToken(user.token)
-      //setuser(user)
-
-    } catch (error) {
-      dispatch(setNotification('Wrong credentials', 5, true))
-    }
-  }
-
-  const HandleLogOut = (event) => {
-    event.preventDefault()
-    window.localStorage.removeItem('loggedBlogAppUser')
-    //setuser(null)
-  }
-
-  /*   const HandleBlogSubmit = async (newBlog) => {
-    if (!window.localStorage.getItem('loggedBlogAppUser')) {
-      return setuser(null)
-    }
-
-    dispatch(addBlog(newBlog, user))
-    blogFormRef.current.toggleVisibility()
-  } */
-
   const byLikes = (firstItem, secondItem) => {
     return secondItem.likes - firstItem.likes
   }
@@ -63,17 +30,17 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification/>
+      <Notification />
 
       {user === null
         ? <div>
           <p>Login to application</p>
-          <LoginForm  Login={HandleLogin} />
+          <LoginForm />
         </div>
 
         : <div>
           <p>Logged in as {user.name}</p>
-          <LogOutButton onClick={HandleLogOut}/>
+          <LogOutButton />
 
           <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
             <BlogForm blogFormRef={blogFormRef}/>

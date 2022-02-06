@@ -1,8 +1,17 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { logout } from '../reducers/userReducer'
 
-const LogOutButton = ({ onClick }) => {
+const LogOutButton = () => {
+
+  const dispatch = useDispatch()
+
+  const HandleLogOut = (event) => {
+    event.preventDefault()
+    dispatch(logout())
+  }
   return(
-    <button onClick={onClick}>Logout</button>
+    <button onClick={HandleLogOut}>Logout</button>
   )
 }
 
