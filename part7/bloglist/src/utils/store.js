@@ -5,9 +5,11 @@ import blogReducer from '../reducers/blogReducer'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import userReducer from '../reducers/userReducer'
+import allUserReducer from '../reducers/allUserReducer'
 
 const reducer = combineReducers({
   user: userReducer,
+  allUsers: allUserReducer,
   blogs: blogReducer,
   notification: notificationReducer,
 })
