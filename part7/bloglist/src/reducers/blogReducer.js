@@ -16,9 +16,7 @@ const blogReducer = (state = [], action) => {
       likes: blogToLike.likes + 1
     }
 
-    return blogToLike
-      ? state.map(b => b.id === action.data.id ? updatedBlog : b)
-      : state
+    return state.map(b => b.id === action.data.id ? updatedBlog : b)
   }
 
   case 'DELETE':

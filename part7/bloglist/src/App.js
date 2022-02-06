@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Toggleable from './components/Toggleable'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
@@ -9,11 +9,13 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from './reducers/notificationReducer'
-import { addBlog, initializeBlogs } from './reducers/blogReducer'
+import { initializeBlogs } from './reducers/blogReducer'
+import { initUser } from './reducers/userReducer'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
-  const [user, setuser] = useState(null)
+  //const [user, setuser] = useState(null)
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const blogFormRef = useRef()
 
@@ -22,13 +24,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setuser(user)
-      blogService.setToken(user.token)
-    }
-
+    dispatch(initUser())
   }, [])
 
   const HandleLogin = async (credentials) => {
@@ -38,7 +34,7 @@ const App = () => {
         'loggedBlogAppUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
-      setuser(user)
+      //setuser(user)
 
     } catch (error) {
       dispatch(setNotification('Wrong credentials', 5, true))
@@ -48,17 +44,17 @@ const App = () => {
   const HandleLogOut = (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogAppUser')
-    setuser(null)
+    //setuser(null)
   }
 
-  const HandleBlogSubmit = async (newBlog) => {
+  /*   const HandleBlogSubmit = async (newBlog) => {
     if (!window.localStorage.getItem('loggedBlogAppUser')) {
       return setuser(null)
     }
 
     dispatch(addBlog(newBlog, user))
     blogFormRef.current.toggleVisibility()
-  }
+  } */
 
   const byLikes = (firstItem, secondItem) => {
     return secondItem.likes - firstItem.likes
@@ -80,7 +76,7 @@ const App = () => {
           <LogOutButton onClick={HandleLogOut}/>
 
           <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
-            <BlogForm Create={HandleBlogSubmit} />
+            <BlogForm blogFormRef={blogFormRef}/>
           </Toggleable>
 
           {blogs
