@@ -4,13 +4,11 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
-import LogOutButton from './components/LogOutButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initUser } from './reducers/userReducer'
 import {
   Switch,
-  Link,
   Route,
   useRouteMatch,
   Redirect
@@ -20,25 +18,8 @@ import { User } from './components/Users'
 
 import { initAllUsers } from './reducers/allUserReducer'
 import BlogList from './components/BlogList'
+import Navbar from './components/Navbar'
 
-const Navbar = ({ user }) => {
-  const padding = {
-    padding: 5
-  }
-  return(
-    <div>
-      <Link style={padding} to='/' >Home</Link>
-      <Link style={padding} to='/users' >Users</Link>
-      {user
-        ? <>
-          <em style={padding}>{user.username} logged in</em>
-          <LogOutButton />
-        </>
-        : <Link style={padding} to="/login">Login</Link>
-      }
-    </div>
-  )
-}
 const App = () => {
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
