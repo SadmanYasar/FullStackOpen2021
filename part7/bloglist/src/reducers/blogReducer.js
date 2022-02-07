@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import { addBlogToUser, deleteBlogFromUser } from './allUserReducer'
 import { setNotification } from './notificationReducer'
 import { logout } from './userReducer'
 
@@ -56,6 +57,16 @@ export const addBlog = (blog, user) => {
         type: 'NEW_BLOG',
         data: newBlog
       })
+
+      dispatch(addBlogToUser(
+        newBlog.user.id,
+        {
+          title: newBlog.title,
+          author: newBlog.author,
+          url: newBlog.url,
+          id: newBlog.id
+        }))
+
       dispatch(setNotification(`Blog ${newBlog.title} has been added`, 3, false))
 
     } catch (error) {
@@ -104,6 +115,9 @@ export const deleteBlog = (blog) => {
         type: 'DELETE',
         data: blog.id
       })
+
+      dispatch(deleteBlogFromUser(blog.id))
+
       dispatch(setNotification(
         `Blog ${blog.title} has been deleted`,
         5,

@@ -55,37 +55,41 @@ const App = () => {
     : null
 
   return (
-    <><Navbar /><div>
-      <h2>Blogs</h2>
-      <Notification />
+    <>
+      <Navbar />
+      <div>
+        <h2>Blogs</h2>
+        <Notification />
 
-      {user === null
-        ? <LoginForm />
+        {user === null
+          ? <LoginForm />
 
-        : <div>
-          <p>Logged in as {user.name}</p>
-          <LogOutButton />
+          : <div>
+            <p>Logged in as {user.name}</p>
+            <LogOutButton />
 
-          <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
-            <BlogForm blogFormRef={blogFormRef} />
-          </Toggleable>
+            <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
+              <BlogForm blogFormRef={blogFormRef} />
+            </Toggleable>
 
-          {blogs
-            .sort(byLikes)
-            .map(blog => <Blog
-              key={blog.id}
-              blog={blog}
-              own={blog.user.username === user.username} />
-            )}
-        </div>}
-    </div><Switch>
-      <Route path='/users/:id'>
-        <User user={foundUser} />
-      </Route>
-      <Route path='/users'>
-        <Users allUsers={allUsers} />
-      </Route>
-    </Switch></>
+            {blogs
+              .sort(byLikes)
+              .map(blog => <Blog
+                key={blog.id}
+                blog={blog}
+                own={blog.user.username === user.username} />
+              )}
+          </div>}
+      </div>
+      <Switch>
+        <Route path='/users/:id'>
+          <User user={foundUser} />
+        </Route>
+        <Route path='/users'>
+          <Users allUsers={allUsers} />
+        </Route>
+      </Switch>
+    </>
   )
 }
 
