@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { history } from '../index'
 import { login } from '../reducers/userReducer'
 
 const LoginForm = ( ) => {
@@ -17,12 +18,12 @@ const LoginForm = ( ) => {
 
     dispatch(login({
       username, password
-    }))
+    })).then(() => history.push('/'))
 
     setusername('')
     setpassword('')
-  }
 
+  }
 
   return(
     <><p>Login to application</p>

@@ -79,10 +79,6 @@ export const like = (blog) => {
   return async (dispatch) => {
     try {
 
-      if (!window.localStorage.getItem('loggedBlogAppUser')) {
-        return dispatch(logout())
-      }
-
       const updatedBlog = await blogService.updateBlog({
         ...blog,
         likes: blog.likes + 1

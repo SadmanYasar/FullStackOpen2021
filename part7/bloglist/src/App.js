@@ -12,14 +12,16 @@ import {
   Switch,
   Link,
   Route,
-  useRouteMatch
+  useRouteMatch,
+  Redirect
 } from 'react-router-dom'
 import Users from './components/Users'
 import { User } from './components/Users'
 
 import { initAllUsers } from './reducers/allUserReducer'
+import BlogList from './components/BlogList'
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   const padding = {
     padding: 5
   }
@@ -27,6 +29,13 @@ const Navbar = () => {
     <div>
       <Link style={padding} to='/' >Home</Link>
       <Link style={padding} to='/users' >Users</Link>
+      {user
+        ? <>
+          <em style={padding}>{user.username} logged in</em>
+          <LogOutButton />
+        </>
+        : <Link style={padding} to="/login">Login</Link>
+      }
     </div>
   )
 }
@@ -40,53 +49,63 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(initializeBlogs())
     dispatch(initUser())
+    dispatch(initializeBlogs())
     dispatch(initAllUsers())
   }, [])
 
-  const byLikes = (firstItem, secondItem) => {
-    return secondItem.likes - firstItem.likes
-  }
+  const userMatch = useRouteMatch('/users/:id')
+  const foundUser = userMatch
+    ? allUsers.find(u => u.id === userMatch.params.id)
+    : null
 
-  const match = useRouteMatch('/users/:id')
-  const foundUser = match
-    ? allUsers.find(u => u.id === match.params.id)
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const foundBlog = blogMatch
+    ? blogs.find(b => b.id === blogMatch.params.id)
     : null
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} />
       <div>
         <h2>Blogs</h2>
         <Notification />
-
-        {user === null
-          ? <LoginForm />
-
-          : <div>
-            <p>Logged in as {user.name}</p>
-            <LogOutButton />
-
-            <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
-              <BlogForm blogFormRef={blogFormRef} />
-            </Toggleable>
-
-            {blogs
-              .sort(byLikes)
-              .map(blog => <Blog
-                key={blog.id}
-                blog={blog}
-                own={blog.user.username === user.username} />
-              )}
-          </div>}
       </div>
+
       <Switch>
         <Route path='/users/:id'>
           <User user={foundUser} />
         </Route>
+
+        <Route path='/blogs/:id'>
+          <Blog
+            blog={foundBlog}
+            own={foundBlog && user
+              ? foundBlog.user.username === user.username
+              : null}
+          />
+        </Route>
+
         <Route path='/users'>
           <Users allUsers={allUsers} />
+        </Route>
+
+        <Route path='/login'>
+          {user === null
+            ? <LoginForm />
+            : <Redirect to='/' />}
+        </Route>
+
+        <Route path='/'>
+          {user === null
+            ? <Redirect to='/login' />
+
+            : <div>
+              <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
+                <BlogForm blogFormRef={blogFormRef} />
+              </Toggleable>
+              <BlogList blogs={blogs} />
+            </div>}
         </Route>
       </Switch>
     </>

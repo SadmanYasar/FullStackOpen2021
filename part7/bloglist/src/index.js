@@ -5,11 +5,15 @@ import App from './App'
 import store from './utils/store'
 
 import './index.css'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
+
+import { createBrowserHistory } from 'history'
+
+export const history = createBrowserHistory()
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <App />
     </Router>
   </Provider>,

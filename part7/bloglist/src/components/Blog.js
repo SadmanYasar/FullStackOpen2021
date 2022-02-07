@@ -1,45 +1,41 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { useDispatch } from 'react-redux'
+import { history } from '../index'
 import { like, deleteBlog } from '../reducers/blogReducer'
+import { logout } from '../reducers/userReducer'
 
 const Blog = ({ blog, own }) => {
-  const [showdetail, setshowdetail] = useState(false)
-  const buttonText = showdetail ? 'Hide' : 'View'
-
-  const showWhenVisible = { display: showdetail ? '' : 'none' }
+  if (!blog) {
+    return null
+  }
 
   const dispatch = useDispatch()
 
-  const toggleBlog = () => {
-    setshowdetail(!showdetail)
-  }
-
   const updateLikes = () => {
+    if (!window.localStorage.getItem('loggedBlogAppUser')) {
+      dispatch(logout())
+      history.push('/login')
+      return null
+    }
     dispatch(like(blog))
   }
 
   const removeBlog = () => {
+    if (!window.localStorage.getItem('loggedBlogAppUser')) {
+      dispatch(logout())
+      history.push('/login')
+      return null
+    }
     dispatch(deleteBlog(blog))
   }
 
   return(
-    <div className='blog'>
-      <div>
-        <p>{blog.title} - {blog.author} <button onClick={toggleBlog}>{buttonText}</button></p>
-      </div>
-
-      <div style={showWhenVisible} className='togglable'>
-        <p>URL - {blog.url}</p>
-        <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
-        {own && <button onClick={removeBlog}>Delete</button>}
-      </div>
+    <div>
+      <h1>{blog.title} - {blog.author} </h1>
+      <p>URL - {blog.url}</p>
+      <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
+      {own && <button onClick={removeBlog}>Delete</button>}
     </div>
   )}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  own: PropTypes.bool.isRequired
-}
 
 export default Blog
