@@ -18,7 +18,8 @@ blogRouter.post('/', middleware.userExtractor, async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes === undefined ? 0 : body.likes,
+    likes: body.likes ? 0 : body.likes,
+    comments: body.comments ? [] : body.comments,
     user: user._id,
   });
 
@@ -50,10 +51,6 @@ blogRouter.delete('/:id', middleware.userExtractor, async (request, response) =>
 blogRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const { body } = request;
 
-  if (!body.likes) {
-    body.likes = 0;
-  }
-
   const blog = await Blog.findById(request.params.id);
   const { user } = request;
 
@@ -71,7 +68,8 @@ blogRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes,
+    ...(body.likes) && { likes: body.likes },
+    ...(body.comments) && { comments: body.comments },
   };
 
   const updatedBlog = await Blog

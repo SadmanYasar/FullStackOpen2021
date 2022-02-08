@@ -22,7 +22,7 @@ describe('Blog app', function() {
       cy.get('#username').type('Carl')
       cy.get('#password').type('1234')
       cy.get('#login-button').click()
-      cy.contains('Logged in as Johnson')
+      cy.contains('Carl logged in')
     })
 
     it('fails with wrong credentials', function() {
@@ -33,7 +33,7 @@ describe('Blog app', function() {
         .should('contain', 'Wrong credentials')
         .and('have.css', 'color', 'rgb(255, 0, 0)')
 
-      cy.get('html').should('not.contain', 'Logged in as Johnson')
+      cy.get('html').should('not.contain', 'Carl logged in')
     })
   })
 

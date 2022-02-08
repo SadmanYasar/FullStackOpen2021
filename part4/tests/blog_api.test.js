@@ -16,10 +16,6 @@ beforeEach(async () => {
     .map((blog) => new Blog(blog));
   const promiseArray = blogObjects.map((blog) => blog.save());
   await Promise.all(promiseArray);
-  /* for (const blog of helper.initialBlogs) {
-    const blogObject = new Blog(blog);
-    await blogObject.save();
-  } */
 });
 
 describe('when there is initially some blogs saved', () => {

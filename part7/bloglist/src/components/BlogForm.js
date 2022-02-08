@@ -12,7 +12,6 @@ const BlogForm = ({ blogFormRef }) => {
   const HandleAuthor = ({ target }) => setauthor(target.value)
   const HandleURL = ({ target }) => seturl(target.value)
 
-
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
 

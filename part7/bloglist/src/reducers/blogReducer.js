@@ -44,7 +44,8 @@ export const addBlog = (blog, user) => {
     try {
 
       if (!window.localStorage.getItem('loggedBlogAppUser')) {
-        return dispatch(logout())
+        dispatch(logout())
+        return null
       }
 
       const newBlog = await blogService.create(blog)
@@ -79,6 +80,11 @@ export const like = (blog) => {
   return async (dispatch) => {
     try {
 
+      if (!window.localStorage.getItem('loggedBlogAppUser')) {
+        dispatch(logout())
+        return null
+      }
+
       const updatedBlog = await blogService.updateBlog({
         ...blog,
         likes: blog.likes + 1
@@ -102,7 +108,8 @@ export const deleteBlog = (blog) => {
     try {
 
       if (!window.localStorage.getItem('loggedBlogAppUser')) {
-        return dispatch(logout())
+        dispatch(logout())
+        return null
       }
 
       await blogService.deleteBlog(blog.id)

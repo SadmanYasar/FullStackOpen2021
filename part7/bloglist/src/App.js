@@ -59,12 +59,14 @@ const App = () => {
         </Route>
 
         <Route path='/blogs/:id'>
-          <Blog
-            blog={foundBlog}
-            own={foundBlog && user
-              ? foundBlog.user.username === user.username
-              : null}
-          />
+          {user === null
+            ? <Redirect to='/' />
+            : <Blog
+              blog={foundBlog}
+              own={foundBlog
+                ? foundBlog.user.username === user.username
+                : null}
+            /> }
         </Route>
 
         <Route path='/users'>

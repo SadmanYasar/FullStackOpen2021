@@ -1,8 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { history } from '../index'
 import { like, deleteBlog } from '../reducers/blogReducer'
-import { logout } from '../reducers/userReducer'
 
 const Blog = ({ blog, own }) => {
   if (!blog) {
@@ -12,20 +10,10 @@ const Blog = ({ blog, own }) => {
   const dispatch = useDispatch()
 
   const updateLikes = () => {
-    if (!window.localStorage.getItem('loggedBlogAppUser')) {
-      dispatch(logout())
-      history.push('/login')
-      return null
-    }
     dispatch(like(blog))
   }
 
   const removeBlog = () => {
-    if (!window.localStorage.getItem('loggedBlogAppUser')) {
-      dispatch(logout())
-      history.push('/login')
-      return null
-    }
     dispatch(deleteBlog(blog))
   }
 
