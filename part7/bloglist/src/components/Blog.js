@@ -23,6 +23,11 @@ const Blog = ({ blog, own }) => {
       <p>URL - {blog.url}</p>
       <p>likes - {blog.likes} <button onClick={updateLikes}>Like</button></p>
       {own && <button onClick={removeBlog}>Delete</button>}
+      <h1>Comments</h1>
+      <ul>
+        {blog.comments.map((c, i) =>
+          <li key={i}>{c}</li>)}
+      </ul>
     </div>
   )}
 
