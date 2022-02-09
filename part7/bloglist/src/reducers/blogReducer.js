@@ -24,6 +24,16 @@ const blogReducer = (state = [], action) => {
   case 'DELETE':
     return state.filter(b => b.id !== String(action.data))
 
+  case 'COMMENT': {
+    const id = action.data.id
+    const updatedBlog = state.find((blog) => blog.id === id)
+    const changedBlog = {
+      ...updatedBlog,
+      comments: action.data.comments
+    }
+    return state.map((blog) => (blog.id !== id ? blog : changedBlog))
+  }
+
   default:
     return state
   }
@@ -141,6 +151,34 @@ export const deleteBlog = (blog) => {
         5,
         true)
       )
+    }
+  }
+}
+
+export const commentBlog = (blog, comment) => {
+  return async (dispatch) => {
+    try {
+
+      if (!window.localStorage.getItem('loggedBlogAppUser')) {
+        dispatch(logout())
+        return null
+      }
+
+      const updatedBlog = await blogService.updateBlog({
+        ...blog,
+        comments: blog.comments.concat(comment)
+      })
+
+      updatedBlog.user = blog.user
+      dispatch({
+        type: 'COMMENT',
+        data: updatedBlog
+      })
+      dispatch(setNotification('Comment added', 2, false))
+
+    } catch (error) {
+      console.log(error)
+      dispatch(setNotification('Could not update', 5, true))
     }
   }
 }

@@ -44,14 +44,14 @@ describe('Blog reducer', () => {
   test('can delete', () => {
     const state = [
       {
-        id: 1,
+        id: '1',
         title: 'first blog',
         author: 'sy17',
         url: 'https://w3.com',
         likes: 0
       },
       {
-        id: 2,
+        id: '2',
         title: 'second blog',
         author: 'sy17',
         url: 'https://w3.com',
@@ -61,9 +61,7 @@ describe('Blog reducer', () => {
 
     const action = {
       type: 'DELETE',
-      data: {
-        id: 2
-      }
+      data: 2
     }
 
     deepFreeze(state)
@@ -101,4 +99,39 @@ describe('Blog reducer', () => {
     expect(newState).toHaveLength(3)
     expect(newState).toContain(action.data)
   })
+
+  test.only('can comment', () => {
+    const state = [
+      {
+        id: 1,
+        title: 'first blog',
+        author: 'sy17',
+        url: 'https://github.com',
+        likes: 0,
+        comments: [
+          'test comment'
+        ]
+      },
+      {
+        id: 2,
+        title: 'second blog',
+        author: 'sy18',
+        url: 'https://heroku.com',
+        likes: 0,
+        comments: []
+      }
+    ]
+
+    const action = {
+      type: 'COMMENT',
+      comment: 'Second comment',
+      blogId: 1
+    }
+
+    deepFreeze(state)
+    const newState = blogReducer(state, action)
+    expect(newState[0].comments).toHaveLength(2)
+    expect(newState[0].comments).toContain('Second comment')
+  })
+
 })
