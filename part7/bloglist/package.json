@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/react": "^1.8.3",
+    "@emotion/react": "^11.7.1",
+    "@emotion/styled": "^11.6.0",
     "@testing-library/user-event": "^12.6.3",
     "axios": "^0.21.1",
+    "framer-motion": "^5.6.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.8.0",
     "react": "^17.0.1",
@@ -25,7 +29,7 @@
     "eslint": "eslint .",
     "testCI": "CI=true npm test",
     "cypress:open": "cypress open",
-    "server": "json-server -p3003 --watch db.json"
+    "server": "json-server -p3003 --watch db.json --routes routes.json"
   },
   "eslintConfig": {
     "extends": [

@@ -7,5 +7,20 @@
             "url": "lmao.com",
             "likes": 10
         }
-    ]     
+    ],
+    
+    "users": [
+        {
+            "id": 1,
+            "username": "Carl",
+            "name": "Johnson",
+            "password": "lmao"
+        }
+    ],
+    
+    "login": [
+        {
+            
+        }
+    ]
 }
