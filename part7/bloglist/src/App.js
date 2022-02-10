@@ -19,6 +19,7 @@ import { User } from './components/Users'
 import { initAllUsers } from './reducers/allUserReducer'
 import BlogList from './components/BlogList'
 import Navbar from './components/Navbar'
+import { Container } from '@chakra-ui/react'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
@@ -46,7 +47,7 @@ const App = () => {
     : null
 
   return (
-    <>
+    <Container maxW="container.xl" p={0}>
       <Navbar user={user} />
       <div>
         <h2>Blogs</h2>
@@ -91,7 +92,7 @@ const App = () => {
             </div>}
         </Route>
       </Switch>
-    </>
+    </Container>
   )
 }
 
