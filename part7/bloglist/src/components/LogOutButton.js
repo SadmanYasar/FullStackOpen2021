@@ -1,3 +1,4 @@
+import { Button } from '@chakra-ui/react'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { history } from '../index'
@@ -12,8 +13,9 @@ const LogOutButton = () => {
     dispatch(logout())
     history.push('/login')
   }
+
   return(
-    <button onClick={HandleLogOut}>Logout</button>
+    <Button colorScheme="whiteAlpha.50" p={3} variant="link" onClick={HandleLogOut} >Logout</Button>
   )
 }
 

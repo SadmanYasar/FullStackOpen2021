@@ -19,7 +19,8 @@ import { User } from './components/Users'
 import { initAllUsers } from './reducers/allUserReducer'
 import BlogList from './components/BlogList'
 import Navbar from './components/Navbar'
-import { Box, Container } from '@chakra-ui/react'
+import { Box, Container, IconButton } from '@chakra-ui/react'
+import { MdOutlineAddCircleOutline } from 'react-icons/md'
 
 const App = () => {
   const blogs = useSelector(state => state.blogs)
@@ -83,12 +84,16 @@ const App = () => {
           {user === null
             ? <Redirect to='/login' />
 
-            : <div>
-              <Toggleable buttonLabel='Add a blog' ref={blogFormRef}>
+            : <Box width="full">
+              <Toggleable
+                buttonLabel={<IconButton
+                  fontSize="30px"
+                  icon={<MdOutlineAddCircleOutline />}/>}
+                ref={blogFormRef}>
                 <BlogForm blogFormRef={blogFormRef} />
               </Toggleable>
               <BlogList blogs={blogs} />
-            </div>}
+            </Box>}
         </Route>
       </Switch>
     </Container>

@@ -6,14 +6,16 @@ import {
   Spacer,
   useColorMode,
   useColorModeValue,
-  Button,
+  IconButton,
 } from '@chakra-ui/react'
-import React from 'react'
+import React /* { useState } */ from 'react'
 import { Link as RouteLink } from 'react-router-dom'
 import LogOutButton from './LogOutButton'
+import { MdOutlineDarkMode } from 'react-icons/md'
+import { MdOutlineLightMode } from 'react-icons/md'
 
 const Navbar = ({ user }) => {
-  const { toggleColorMode } = useColorMode()
+  const { colorMode, toggleColorMode } = useColorMode()
   const color = useColorModeValue('red.300', 'gray.700')
   return(
     <Flex
@@ -35,21 +37,22 @@ const Navbar = ({ user }) => {
       </Box>
       <Box p={3}>
         {user
-          ? <>
-            <em>{user.username} logged in</em>
-            <LogOutButton />
-          </>
+          ? <LogOutButton />
+
           : <Link as={RouteLink} to="/login">Login</Link>
         }
       </Box>
       <Spacer />
       <Box p={2}>
-        <Button
+        <IconButton
           onClick={toggleColorMode}
-          variant="outline"
-          colorScheme="black">
-          H
-        </Button>
+          variant="ghost"
+          aria-label='change theme'
+          fontSize='30px'
+          isRound={true}
+          icon={colorMode === 'dark'
+            ? <MdOutlineLightMode />
+            : <MdOutlineDarkMode />}/>
       </Box>
     </Flex>
   )

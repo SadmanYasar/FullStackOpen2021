@@ -99,11 +99,12 @@ const LoginForm = ( ) => {
           href='https://github.com/SadmanYasar/FullStackOpen2021/tree/main/part7/bloglist'
           isExternal>
           <IconButton
-            aria-label='github link to sorce code'
+            aria-label='github link to source code'
             fontSize='30px'
             isRound={true}
             icon={<GoMarkGithub />}
-          /></Link>
+          />
+        </Link>
       </VStack>
     </Flex>
   )

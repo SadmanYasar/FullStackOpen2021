@@ -2,6 +2,19 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { addBlog } from '../reducers/blogReducer'
+import {
+  Flex,
+  Heading,
+  VStack,
+  SimpleGrid,
+  GridItem,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  IconButton, } from '@chakra-ui/react'
+
+import { MdOutlineCancel } from 'react-icons/md'
 
 const BlogForm = ({ blogFormRef }) => {
   const [title, settitle] = useState('')
@@ -34,43 +47,83 @@ const BlogForm = ({ blogFormRef }) => {
     seturl('')
   }
 
+  const closeForm = (event) => {
+    event.preventDefault()
+    blogFormRef.current.toggleVisibility()
+  }
+
+  const colSpan = 2
+
   return(
-    <form onSubmit={Add}>
-      <div>
-            Title:
-        <input
-          id='title'
-          type="text"
-          name="Title"
-          value={title}
-          onChange={HandleTitle}
-        />
-      </div>
 
-      <div>
-            Author:
-        <input
-          id='author'
-          type="text"
-          name="Author"
-          value={author}
-          onChange={HandleAuthor}
-        />
-      </div>
+    <Flex
+      h="100vh"
+      py={[5, 10, 20]}
+      direction={{ base: 'column', md: 'row' }}
+      justifyContent="center"
+    >
+      <VStack
+        w={{ base: 'full', md: '50%' }}
+        h="full"
+        p={10}
+        spacing={10}>
 
-      <div>
-            URL:
-        <input
-          id='url'
-          type="text"
-          name="URL"
-          value={url}
-          onChange={HandleURL}
-          required
-        />
-      </div>
-      <button id='blog-button' type="submit">Add</button>
-    </form>
+        <Heading size="lg">Add a blog</Heading>
+
+        <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
+          <GridItem colSpan={colSpan}>
+            <FormControl>
+              <FormLabel>Title</FormLabel>
+              <Input
+                id="title"
+                type="text"
+                name="title"
+                value={title}
+                onChange={HandleTitle} />
+            </FormControl>
+          </GridItem>
+          <GridItem colSpan={colSpan}>
+            <FormControl>
+              <FormLabel>Author</FormLabel>
+              <Input
+                id="author"
+                type="text"
+                name="author"
+                value={author}
+                onChange={HandleAuthor} />
+            </FormControl>
+          </GridItem>
+          <GridItem colSpan={colSpan}>
+            <FormControl>
+              <FormLabel>URL</FormLabel>
+              <Input
+                id="url"
+                type="text"
+                name="url"
+                value={url}
+                onChange={HandleURL} />
+            </FormControl>
+          </GridItem>
+          <GridItem colSpan={2}>
+            <Button
+              size="lg"
+              w="full"
+              id='login-button'
+              type="submit"
+              onClick={Add}>
+                Add
+            </Button>
+          </GridItem>
+          <GridItem colSpan={2} align="center">
+            <IconButton
+              aria-label='close blog form'
+              fontSize='30px'
+              icon={<MdOutlineCancel />}
+              onClick={closeForm}/>
+          </GridItem>
+        </SimpleGrid>
+      </VStack>
+    </Flex>
   )
 }
 

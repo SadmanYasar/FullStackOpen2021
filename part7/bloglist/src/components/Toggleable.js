@@ -1,5 +1,4 @@
 import React, { useState, useImperativeHandle } from 'react'
-import PropTypes from 'prop-types'
 
 const Toggleable = React.forwardRef((props, ref) => {
   const [visible, setvisible] = useState(false)
@@ -27,16 +26,14 @@ const Toggleable = React.forwardRef((props, ref) => {
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>Cancel</button>
+        {props.cancel && <button onClick={toggleVisibility}>
+            props.cancel
+        </button>}
       </div>
     </>
   )
 })
 
 Toggleable.displayName = 'Toggleable'
-
-Toggleable.propTypes = {
-  buttonLabel: PropTypes.string.isRequired
-}
 
 export default Toggleable
