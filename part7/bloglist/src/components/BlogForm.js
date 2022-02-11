@@ -18,6 +18,10 @@ const BlogForm = ({ blogFormRef }) => {
   const Add = (event) => {
     event.preventDefault()
 
+    if (!title || !author || !url) {
+      return null
+    }
+
     const newBlog = {
       title, author, url
     }
