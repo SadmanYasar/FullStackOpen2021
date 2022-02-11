@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import { like, deleteBlog, commentBlog } from '../reducers/blogReducer'
 
 const Blog = ({ blog, own }) => {
@@ -7,6 +8,8 @@ const Blog = ({ blog, own }) => {
   if (!blog) {
     return null
   }
+
+  const history = useHistory()
 
   const dispatch = useDispatch()
 
@@ -16,6 +19,7 @@ const Blog = ({ blog, own }) => {
 
   const removeBlog = () => {
     dispatch(deleteBlog(blog))
+    history.push('/')
   }
 
   const handleSubmit = (event) => {

@@ -3,7 +3,7 @@
     --text-color: rgb(43, 255, 0);
 }
 
-[notificationtype="error"] {
+/* [notificationtype="error"] {
     --background-color: rgb(112, 128, 144) ;
     --text-color: rgb(255, 0, 0);
 }
@@ -16,7 +16,7 @@
 #notification {
     background-color: var(--background-color);
     color: var(--text-color);
-}
+} */
 
 #notification:empty {
     display: none;
