@@ -19,7 +19,7 @@ import { User } from './components/Users'
 import { initAllUsers } from './reducers/allUserReducer'
 import BlogList from './components/BlogList'
 import Navbar from './components/Navbar'
-import { Box, Container, IconButton } from '@chakra-ui/react'
+import { Box, Container } from '@chakra-ui/react'
 import { MdOutlineAddCircleOutline } from 'react-icons/md'
 
 const App = () => {
@@ -86,9 +86,7 @@ const App = () => {
 
             : <Box width="full">
               <Toggleable
-                buttonLabel={<IconButton
-                  fontSize="30px"
-                  icon={<MdOutlineAddCircleOutline />}/>}
+                buttonlabel={<MdOutlineAddCircleOutline />}
                 ref={blogFormRef}>
                 <BlogForm blogFormRef={blogFormRef} />
               </Toggleable>

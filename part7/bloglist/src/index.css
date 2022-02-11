@@ -21,9 +21,3 @@
 #notification:empty {
     display: none;
 }
-
-.blog {
-    border: 2px solid black ;
-    border-radius: 10px;
-    padding: 5px;
-}

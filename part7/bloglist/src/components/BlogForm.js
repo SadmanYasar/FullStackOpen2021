@@ -11,8 +11,10 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Button,
-  IconButton, } from '@chakra-ui/react'
+  IconButton,
+  Button, } from '@chakra-ui/react'
+
+import { motion } from 'framer-motion'
 
 import { MdOutlineCancel } from 'react-icons/md'
 
@@ -105,21 +107,39 @@ const BlogForm = ({ blogFormRef }) => {
             </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <Button
-              size="lg"
-              w="full"
-              id='login-button'
-              type="submit"
-              onClick={Add}>
+            <motion.div
+              whileTap={{ scale: 0.9 }}>
+              <Button
+                size="lg"
+                w="full"
+                id='login-button'
+                type="submit"
+                onClick={Add}
+                bgGradient='linear(to-r, teal.500, green.500)'
+                _hover={{
+                  bgGradient: 'linear(to-r, red.500, yellow.500)',
+                }}
+                _active={{
+                  bgGradient: 'linear(to-r, red.500, yellow.500)',
+                }}>
                 Add
-            </Button>
+              </Button>
+            </motion.div>
           </GridItem>
           <GridItem colSpan={2} align="center">
             <IconButton
               aria-label='close blog form'
               fontSize='30px'
               icon={<MdOutlineCancel />}
-              onClick={closeForm}/>
+              onClick={closeForm}
+              bgGradient='linear(to-r, teal.500, green.500)'
+              _hover={{
+                bgGradient: 'linear(to-r, red.500, yellow.500)',
+              }}
+              _active={{
+                bgGradient: 'linear(to-r, red.500, yellow.500)',
+                transform: 'scale(0.9)'
+              }}/>
           </GridItem>
         </SimpleGrid>
       </VStack>

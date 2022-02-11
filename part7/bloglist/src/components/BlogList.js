@@ -1,3 +1,8 @@
+import {
+  Box,
+  Flex,
+  Text
+} from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -6,17 +11,27 @@ const BlogList = ({ blogs }) => {
     return secondItem.likes - firstItem.likes
   }
   return(
-    <>
+    <Flex
+      width='full'
+      justifyContent='center'
+      alignItems='center'
+      direction={{ base: 'column', md: 'row' }}>
       {blogs
         .sort(byLikes)
         .map(blog =>
-          <div key={blog.id} className='blog' >
+          <Box
+            key={blog.id}
+            p={5}
+            m={3}
+            w='300px'
+            css={{ boxShadow: 'rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px' }}>
             <Link to={`/blogs/${blog.id}`} >
-              {blog.title} - {blog.author}
+              <Text fontSize='4xl'>{blog.title}</Text>
+              <Text fontSize='2xl' >by {blog.author}</Text>
             </Link>
-          </div>
+          </Box>
         )}
-    </>
+    </Flex>
   )
 }
 

@@ -15,7 +15,7 @@ const LogOutButton = () => {
   }
 
   return(
-    <Button colorScheme="whiteAlpha.50" p={3} variant="link" onClick={HandleLogOut} >Logout</Button>
+    <Button colorScheme="whiteAlpha.50" p={2} variant="link" onClick={HandleLogOut} >Logout</Button>
   )
 }
 

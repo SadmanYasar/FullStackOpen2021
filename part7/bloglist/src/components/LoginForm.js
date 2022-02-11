@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react'
 
 import { GoMarkGithub } from 'react-icons/go'
+import { motion } from 'framer-motion'
 
 const LoginForm = ( ) => {
   const [username, setusername] = useState('')
@@ -59,7 +60,9 @@ const LoginForm = ( ) => {
         p={10}
         spacing={10}>
 
-        <Heading size="lg">Login to continue</Heading>
+        <Heading size="lg">
+            Login to continue
+        </Heading>
 
         <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
           <GridItem colSpan={colSpan}>
@@ -85,14 +88,24 @@ const LoginForm = ( ) => {
             </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <Button
-              size="lg"
-              w="full"
-              id='login-button'
-              type="submit"
-              onClick={loginUser}>
+            <motion.div
+              whileTap={{ scale: 0.9 }}>
+              <Button
+                size="lg"
+                w="full"
+                id='login-button'
+                type="submit"
+                onClick={loginUser}
+                bgGradient='linear(to-r, teal.500, green.500)'
+                _hover={{
+                  bgGradient: 'linear(to-r, red.500, yellow.500)',
+                }}
+                _active={{
+                  bgGradient: 'linear(to-r, red.500, yellow.500)',
+                }}>
                 Login
-            </Button>
+              </Button>
+            </motion.div>
           </GridItem>
         </SimpleGrid>
         <Link
