@@ -49,29 +49,29 @@ const LoginForm = ( ) => {
 
   return(
     <Flex
-      h="100vh"
+      h='100vh'
       py={[5, 10, 20]}
       direction={{ base: 'column', md: 'row' }}
-      justifyContent="center"
+      justifyContent='center'
     >
       <VStack
         w={{ base: 'full', md: '50%' }}
-        h="full"
+        h='full'
         p={10}
         spacing={10}>
 
-        <Heading size="lg">
+        <Heading size='lg'>
             Login to continue
         </Heading>
 
-        <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
+        <SimpleGrid columns={2} columnGap={3} rowGap={6} w='full'>
           <GridItem colSpan={colSpan}>
             <FormControl>
               <FormLabel>Username</FormLabel>
               <Input
-                id="username"
-                type="text"
-                name="Username"
+                id='username'
+                type='text'
+                name='Username'
                 value={username}
                 onChange={HandleUserName} />
             </FormControl>
@@ -80,9 +80,9 @@ const LoginForm = ( ) => {
             <FormControl>
               <FormLabel>Password</FormLabel>
               <Input
-                id="password"
-                type="password"
-                name="Password"
+                id='password'
+                type='password'
+                name='Password'
                 value={password}
                 onChange={HandlePassword} />
             </FormControl>
@@ -91,10 +91,10 @@ const LoginForm = ( ) => {
             <motion.div
               whileTap={{ scale: 0.9 }}>
               <Button
-                size="lg"
-                w="full"
+                size='lg'
+                w='full'
                 id='login-button'
-                type="submit"
+                type='submit'
                 onClick={loginUser}
                 bgGradient='linear(to-r, teal.500, green.500)'
                 _hover={{

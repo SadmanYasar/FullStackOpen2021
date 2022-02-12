@@ -12,7 +12,7 @@ const BlogList = ({ blogs }) => {
   }
   return(
     <Flex
-      width='100%'
+      width='full'
       justifyContent='center'
       direction='column'>
       {blogs

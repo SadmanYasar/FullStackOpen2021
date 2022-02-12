@@ -1,3 +1,4 @@
+import { Flex, Heading, Table, Thead, Tr, Td, Th, VStack, Tbody } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -20,9 +21,31 @@ export const User = ({ user }) => {
 const Users = ({ allUsers }) => {
 
   return(
-    <div>
-      <h2>Users</h2>
-      <table>
+    <Flex
+      w='full'>
+      <VStack
+        w='full'
+        p={10}
+        spacing={10}>
+        <Heading size='2xl'>Users</Heading>
+        <Table variant='striped' colorScheme='green'>
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Blogs created</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {allUsers.map(u =>
+              <Tr key={u.id}>
+                <Td><Link to={`/users/${u.id}`}>{u.username}</Link></Td>
+                <Td>{u.blogs.length}</Td>
+              </Tr>
+            )}
+          </Tbody>
+        </Table>
+      </VStack>
+      {/* <table>
         <tbody>
           <tr>
             <th>Name</th>
@@ -35,8 +58,8 @@ const Users = ({ allUsers }) => {
             </tr>
           )}
         </tbody>
-      </table>
-    </div>
+      </table> */}
+    </Flex>
   )
 }
 
