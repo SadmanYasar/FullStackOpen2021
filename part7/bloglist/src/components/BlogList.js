@@ -12,10 +12,9 @@ const BlogList = ({ blogs }) => {
   }
   return(
     <Flex
-      width='full'
+      width='100%'
       justifyContent='center'
-      alignItems='center'
-      direction={{ base: 'column', md: 'row' }}>
+      direction='column'>
       {blogs
         .sort(byLikes)
         .map(blog =>
@@ -23,8 +22,8 @@ const BlogList = ({ blogs }) => {
             key={blog.id}
             p={5}
             m={3}
-            w='300px'
-            css={{ boxShadow: 'rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px' }}>
+            css={{ boxShadow: 'rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px',
+            }}>
             <Link to={`/blogs/${blog.id}`} >
               <Text fontSize='4xl'>{blog.title}</Text>
               <Text fontSize='2xl' >by {blog.author}</Text>
