@@ -25,8 +25,8 @@ const BlogList = ({ blogs }) => {
             css={{ boxShadow: 'rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px',
             }}>
             <Link to={`/blogs/${blog.id}`} >
-              <Text fontSize='4xl'>{blog.title}</Text>
-              <Text fontSize='2xl' >by {blog.author}</Text>
+              <Text fontSize='4xl' isTruncated>{blog.title}</Text>
+              <Text fontSize='2xl' isTruncated>by {blog.author}</Text>
             </Link>
           </Box>
         )}
