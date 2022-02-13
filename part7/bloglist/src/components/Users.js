@@ -1,4 +1,4 @@
-import { Flex, Heading, Table, Thead, Tr, Td, Th, VStack, Tbody } from '@chakra-ui/react'
+import { Flex, Heading, Table, Thead, Tr, Td, Th, VStack, Tbody, UnorderedList, ListItem, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -7,14 +7,24 @@ export const User = ({ user }) => {
     return null
   }
   return(
-    <div>
-      <h1>{user.username}</h1>
-      <p>Added blogs</p>
-      <ul>
+    <Flex
+      w='full'
+      p={10}
+      direction='column'
+      alignItems='center' >
+      <VStack p={3}>
+        <Heading size='2xl'>{user.username}</Heading>
+        <Heading size='xl'>Added blogs</Heading>
+      </VStack>
+      <UnorderedList spacing={5}>
         {user.blogs.map(b =>
-          <li key={b.id}>{b.title}</li>)}
-      </ul>
-    </div>
+          <ListItem
+            color={useColorModeValue('green.500', 'whatsapp.100')}
+            key={b.id}>
+            <Heading size='xl'>{b.title}</Heading>
+          </ListItem>)}
+      </UnorderedList>
+    </Flex>
   )
 }
 
@@ -22,43 +32,30 @@ const Users = ({ allUsers }) => {
 
   return(
     <Flex
-      w='full'>
+      w='full'
+      justifyContent='center'>
       <VStack
-        w='full'
+        w={{ base: 'full', md: '50%' }}
         p={10}
         spacing={10}>
         <Heading size='2xl'>Users</Heading>
-        <Table variant='striped' colorScheme='green'>
+        <Table size='lg' variant='striped' colorScheme='green'>
           <Thead>
             <Tr>
               <Th>Name</Th>
-              <Th>Blogs created</Th>
+              <Th isNumeric>Blogs created</Th>
             </Tr>
           </Thead>
           <Tbody>
             {allUsers.map(u =>
               <Tr key={u.id}>
                 <Td><Link to={`/users/${u.id}`}>{u.username}</Link></Td>
-                <Td>{u.blogs.length}</Td>
+                <Td isNumeric>{u.blogs.length}</Td>
               </Tr>
             )}
           </Tbody>
         </Table>
       </VStack>
-      {/* <table>
-        <tbody>
-          <tr>
-            <th>Name</th>
-            <th>Blogs created</th>
-          </tr>
-          {allUsers.map(u =>
-            <tr key={u.id}>
-              <td><Link to={`/users/${u.id}`}>{u.username}</Link></td>
-              <td>{u.blogs.length}</td>
-            </tr>
-          )}
-        </tbody>
-      </table> */}
     </Flex>
   )
 }
