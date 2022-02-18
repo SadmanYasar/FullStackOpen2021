@@ -1,3 +1,19 @@
+interface BmiValues {
+    height: number,
+    mass: number
+}
+
+const parseBmiArguments = (height: number, mass: number): BmiValues => {
+    if (!isNaN(height) && !isNaN(mass)) {
+        return {
+            height: Number(height),
+            mass: Number(mass)
+        }
+    } else {
+        throw new Error('Provided values were not numbers!')
+    }
+}
+
 const calculateBmi = (height: number, mass: number): string => {
     const bmi: number = (mass / (height * height)) * 10000;
     
@@ -20,6 +36,20 @@ const calculateBmi = (height: number, mass: number): string => {
     }
 }
 
-console.log(calculateBmi(180, 74))
+try {
+    const {height, mass} = parseBmiArguments(
+        Number(process.argv[2]), 
+        Number(process.argv[3])
+    );
+
+    console.log(calculateBmi(height, mass));
+    
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened';
+    if (error instanceof Error) {
+        errorMessage += error.message;
+    }
+    console.log(errorMessage);
+}
 
 module.exports = calculateBmi;

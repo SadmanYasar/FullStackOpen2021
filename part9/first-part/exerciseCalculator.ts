@@ -8,9 +8,20 @@ interface Result {
   average: number
 }
 
+const parseExcerciseArguments = (target: number, args: Array<number>) => {
+    if (args.some(isNaN) === false && isNaN(target) === false) {
+        return {
+            target,
+            args
+        }
+    } else {
+        throw new Error('Provided values were not numbers!');
+    }
+}
+
 const calculateExercises = (
-    exerciseHours: Array<number>,
-    target: number
+    target: number,
+    exerciseHours: Array<number>
 ): Result => {
     const periodLength = exerciseHours.length;
     const trainingDays = exerciseHours.filter(h => h > 0).length;
@@ -40,8 +51,22 @@ const calculateExercises = (
         target,
         average,
     }
-    
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try {
+  const {target, args} = parseExcerciseArguments(
+      Number(process.argv[2]), 
+      process.argv.slice(3).map(a => Number(a))
+    );
+
+  console.log(calculateExercises(target, args));
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.';
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+
+    console.log(errorMessage);
+}
+
 module.exports = calculateExercises;
