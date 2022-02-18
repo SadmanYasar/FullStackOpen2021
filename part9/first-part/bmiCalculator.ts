@@ -3,7 +3,7 @@ interface BmiValues {
     mass: number
 }
 
-const parseBmiArguments = (height: number, mass: number): BmiValues => {
+export const parseBmiArguments = (height: number, mass: number): BmiValues => {
     if (!isNaN(height) && !isNaN(mass)) {
         return {
             height: Number(height),
@@ -14,7 +14,7 @@ const parseBmiArguments = (height: number, mass: number): BmiValues => {
     }
 }
 
-const calculateBmi = (height: number, mass: number): string => {
+export const calculateBmi = (height: number, mass: number): string => {
     const bmi: number = (mass / (height * height)) * 10000;
     
     if (bmi < 16) {
@@ -36,7 +36,7 @@ const calculateBmi = (height: number, mass: number): string => {
     }
 }
 
-try {
+/* try {
     const {height, mass} = parseBmiArguments(
         Number(process.argv[2]), 
         Number(process.argv[3])
@@ -51,5 +51,4 @@ try {
     }
     console.log(errorMessage);
 }
-
-module.exports = calculateBmi;
+ */
