@@ -13,11 +13,11 @@ const parseExcerciseArguments = (target: number, args: Array<number>) => {
         return {
             target,
             args
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
     }
-}
+};
 
 const calculateExercises = (
     target: number,
@@ -36,10 +36,10 @@ const calculateExercises = (
         ratingDescription = 'excellent';
     } else if (average === target) {
         rating = 2;
-        ratingDescription = 'not too bad but could be better'
+        ratingDescription = 'not too bad but could be better';
     } else {
         rating = 1;
-        ratingDescription = 'task failed successfully'
+        ratingDescription = 'task failed successfully';
     }
 
     return {
@@ -50,8 +50,8 @@ const calculateExercises = (
         ratingDescription,
         target,
         average,
-    }
-}
+    };
+};
 
 try {
   const {target, args} = parseExcerciseArguments(

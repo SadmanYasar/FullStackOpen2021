@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/hello', (_req, res) => {
     res.send('Hello fullstack!');
-})
+});
 
 app.get('/bmi', (req, res) => {
     const query = req.query;
@@ -32,9 +32,9 @@ app.get('/bmi', (req, res) => {
             return res.status(400).send({ error: error.message });  
         }
 
-        return res.status(400).send({error: 'Could not handle request'})
+        return res.status(400).send({error: 'Could not handle request'});
     }
-})
+});
 
 const PORT = 3003;
 
