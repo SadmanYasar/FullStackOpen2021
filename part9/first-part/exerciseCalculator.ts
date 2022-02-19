@@ -1,25 +1,33 @@
-interface Result {
-  periodLength: number,
-  trainingDays: number,
-  success: boolean,
-  rating: number,
-  ratingDescription: string,
-  target: number,
-  average: number
+interface ExerciseParams {
+    target: number;
+    dailyExerciseHours: Array<number>;
 }
 
-const parseExcerciseArguments = (target: number, args: Array<number>) => {
-    if (args.some(isNaN) === false && isNaN(target) === false) {
+export const parseExcerciseArguments = (
+    target: number, 
+    dailyExerciseHours: Array<number>
+    ): ExerciseParams => {
+    if (isNaN(target) === true && dailyExerciseHours.some(isNaN) === true) {
+        throw new Error('malformatted parameters');
+    } else {
         return {
             target,
-            args
+            dailyExerciseHours
         };
-    } else {
-        throw new Error('Provided values were not numbers!');
     }
 };
 
-const calculateExercises = (
+interface Result {
+    periodLength: number;
+    trainingDays: number;
+    success: boolean;
+    rating: number;
+    ratingDescription: string;
+    target: number;
+    average: number;
+}
+
+export const calculateExercises = (
     target: number,
     exerciseHours: Array<number>
 ): Result => {
@@ -29,7 +37,7 @@ const calculateExercises = (
 
     const success = average >= target;
     
-    let rating, ratingDescription;
+    let rating: number, ratingDescription: string;
 
     if (average > target) {
         rating = 3;
@@ -52,21 +60,3 @@ const calculateExercises = (
         average,
     };
 };
-
-try {
-  const {target, args} = parseExcerciseArguments(
-      Number(process.argv[2]), 
-      process.argv.slice(3).map(a => Number(a))
-    );
-
-  console.log(calculateExercises(target, args));
-} catch (error: unknown) {
-    let errorMessage = 'Something bad happened.';
-    if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message;
-    }
-
-    console.log(errorMessage);
-}
-
-module.exports = calculateExercises;
