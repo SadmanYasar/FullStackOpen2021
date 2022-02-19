@@ -67,6 +67,34 @@ app.post('/exercises', (request, response) => {
     }
 });
 
+app.post('/exercises', (req, res) => {
+    console.log(req.body);
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+    const dailyExercises = req.body.daily_exercises;
+
+    /* eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment */
+    const dailyTarget = req.body.target;
+
+    if (!dailyExercises || !dailyTarget) {
+        return res.status(400).send({ error: 'parameters missing' });
+    } else {
+        try {
+            const { target, dailyExerciseHours } = parseExcerciseArguments(
+                /* eslint-disable-next-line @typescript-eslint/no-unsafe-argument */
+                dailyTarget, dailyExercises
+            );
+    
+            return res.status(200).send(calculateExercises(target, dailyExerciseHours));
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                return res.status(400).send({ error: e.message });
+            }
+    
+            return res.status(400).send({ error: 'Could not handle request' });
+        }
+    }
+});
+
 const PORT = 3003;
 
 app.listen(PORT, () => {
