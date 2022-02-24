@@ -1,4 +1,5 @@
 import express from 'express';
+import diagnoseRouter from './routes/diagnoses';
 import cors from 'cors';
 import morgan from 'morgan';
 const app = express();
@@ -13,6 +14,8 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.get('/api/ping', (_request, response) => {
     return response.send('pong');
 });
+
+app.use('/api/diagnoses', diagnoseRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {
