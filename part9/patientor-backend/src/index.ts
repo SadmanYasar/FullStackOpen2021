@@ -1,14 +1,13 @@
 import express from 'express';
 import diagnoseRouter from './routes/diagnoses';
+import patientRouter from './routes/patients';
 import cors from 'cors';
 import morgan from 'morgan';
 const app = express();
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use(cors());
 app.use(express.json());
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
 app.get('/api/ping', (_request, response) => {
@@ -16,6 +15,7 @@ app.get('/api/ping', (_request, response) => {
 });
 
 app.use('/api/diagnoses', diagnoseRouter);
+app.use('/api/patients', patientRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {
