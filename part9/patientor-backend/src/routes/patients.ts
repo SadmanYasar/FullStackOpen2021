@@ -1,5 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService';
+import toNewPatientEntry from '../utils';
 
 const router = express.Router();
 
@@ -8,11 +9,10 @@ router.get('/', (_request, response) => {
 });
 
 router.post('/', (request, response) => {
-    //take req.body 
-    //send it to services for type checking
     try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const addedPatient = patientService.addPatient(request.body);
+        const newPatientEntry = toNewPatientEntry(request.body);
+
+        const addedPatient = patientService.addPatient(newPatientEntry);
         response.json(addedPatient);
     } catch (error: unknown) {
         let errorMessage = 'Something went wrong.';
