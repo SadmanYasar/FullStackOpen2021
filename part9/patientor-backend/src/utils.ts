@@ -1,11 +1,12 @@
-import { Gender, NewPatientEntry } from "./types";
+import { Entry, Gender, NewPatientEntry } from "./types";
 
 type Fields = {
     name: unknown,
     dateOfBirth: unknown,
     gender: unknown,
     occupation: unknown,
-    ssn: unknown
+    ssn: unknown,
+    entries: unknown
 };
 
 const toNewPatientEntry = ({ 
@@ -13,14 +14,16 @@ const toNewPatientEntry = ({
     dateOfBirth, 
     gender,
     occupation, 
-    ssn 
+    ssn,
+    entries
 }: Fields): NewPatientEntry => {
     return {
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         gender: parseGender(gender),
         occupation: parseOccupation(occupation),
-        ssn: parseSSN(ssn)
+        ssn: parseSSN(ssn),
+        entries: parseEntries(entries)
     };
 };
 
@@ -74,6 +77,15 @@ const parseSSN = (ssn: unknown): string => {
     }
 
     return ssn;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const parseEntries = (entries: any): Entry[] => {
+    if (!entries) {
+      throw new Error(`Incorrect or missing entries: ${entries}`);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return entries;
 };
 
 export default toNewPatientEntry;
