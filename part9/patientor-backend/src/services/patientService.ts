@@ -13,7 +13,7 @@ const getNonSensitivePatients = (): NonSensitivePatient[] => {
     }));
 };
 
-const getPatientInfo = (id: string) => {
+const getPatientInfo = (id: string): Patient => {
     const patient = patients.find(p => id === p.id);
     if (!patient) {
         throw new Error('Invalid ID');
