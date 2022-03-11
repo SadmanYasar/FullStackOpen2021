@@ -79,13 +79,20 @@ const parseSSN = (ssn: unknown): string => {
     return ssn;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const parseEntries = (entries: any): Entry[] => {
-    if (!entries) {
+const parseEntries = (entries: unknown): Entry[] => {
+    if (!entries || !isEntryArray(entries)) {
       throw new Error(`Incorrect or missing entries: ${entries}`);
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
     return entries;
+};
+
+const isEntryArray = (data: unknown): data is Entry[] => {
+    const isArray = Array.isArray(data);
+    return isArray ? data.some((item => {
+        return isString(item);
+    }))
+    : false;
 };
 
 export default toNewPatientEntry;
