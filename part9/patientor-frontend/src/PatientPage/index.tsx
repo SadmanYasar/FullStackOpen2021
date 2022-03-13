@@ -7,7 +7,7 @@ import { Patient } from "../types";
 
 const PatientPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [{ patients }, dispatch] = useStateValue();
+    const [{ patients, diagnoses }, dispatch] = useStateValue();
 
     const patient = patients[id];
 
@@ -46,7 +46,7 @@ const PatientPage: React.FC = () => {
             <ul>
               {entry.diagnosisCodes?.map(d => 
                 <li key={d}>
-                  {d}
+                  {d} {diagnoses[d]?.name}
                 </li>)}
             </ul>
           </div>
