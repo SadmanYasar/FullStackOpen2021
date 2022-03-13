@@ -30,15 +30,27 @@ const PatientPage: React.FC = () => {
 
     return (
       <div>
-        <p>
+        <h2>
           {patient?.name} {patient?.gender}
-        </p>
+        </h2>
         <p>
           snn: {patient?.ssn}
         </p>
         <p>
           occupation: {patient?.occupation}
         </p>
+        <b>entries</b>
+        {patient?.entries.map((entry, i) => 
+          <div key={i}>
+            <p>{entry.date} {entry.description}</p>
+            <ul>
+              {entry.diagnosisCodes?.map(d => 
+                <li key={d}>
+                  {d}
+                </li>)}
+            </ul>
+          </div>
+        )}
       </div>
     );
 };
