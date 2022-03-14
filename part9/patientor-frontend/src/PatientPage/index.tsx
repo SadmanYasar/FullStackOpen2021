@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import GenderComponent from "../components/gender";
 import { apiBaseUrl } from "../constants";
 import { updatePatient, useStateValue } from "../state";
 import { Patient } from "../types";
@@ -31,7 +32,7 @@ const PatientPage: React.FC = () => {
     return (
       <div>
         <h2>
-          {patient?.name} {patient?.gender}
+          {patient?.name} <GenderComponent gender={patient?.gender} />
         </h2>
         <p>
           snn: {patient?.ssn}
