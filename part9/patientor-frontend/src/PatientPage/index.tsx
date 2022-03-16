@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import GenderComponent from "../components/gender";
+import EntryDetails from "../components/EntryDetails";
+import GenderComponent from "../components/Gender";
 import { apiBaseUrl } from "../constants";
 import { updatePatient, useStateValue } from "../state";
 import { Patient } from "../types";
 
 const PatientPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [{ patients, diagnoses }, dispatch] = useStateValue();
+    const [{ patients }, dispatch] = useStateValue();
 
     const patient = patients[id];
 
@@ -43,13 +44,7 @@ const PatientPage: React.FC = () => {
         <b>entries</b>
         {patient?.entries.map((entry, i) => 
           <div key={i}>
-            <p>{entry.date} {entry.description}</p>
-            <ul>
-              {entry.diagnosisCodes?.map(d => 
-                <li key={d}>
-                  {d} {diagnoses[d]?.name}
-                </li>)}
-            </ul>
+            <EntryDetails entry={entry} />
           </div>
         )}
       </div>
