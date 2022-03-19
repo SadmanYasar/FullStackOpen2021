@@ -1,6 +1,6 @@
 import express from 'express';
 import patientService from '../services/patientService';
-import toNewPatientEntry from '../utils';
+import {  toNewPatient, toNewEntry } from '../utils';
 
 const router = express.Router();
 
@@ -24,9 +24,9 @@ router.get('/:id', (request, response) => {
 router.post('/', (request, response) => {
     try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        const newPatientEntry = toNewPatientEntry(request.body);
+        const newPatient = toNewPatient(request.body);
 
-        const addedPatient = patientService.addPatient(newPatientEntry);
+        const addedPatient = patientService.addPatient(newPatient);
         response.json(addedPatient);
     } catch (error: unknown) {
         let errorMessage = 'Something went wrong.';
@@ -35,6 +35,29 @@ router.post('/', (request, response) => {
         }
         response.status(400).send(errorMessage);
     }
+});
+
+router.post('/:id/entries', (request, response) => {
+    const patient = patientService.getPatientInfo(request.params.id);
+
+    if (!patient) {
+        return response
+            .status(404)
+            .send({ error: "Sorry, this patient does not exist" });
+    }
+
+    try {
+        const newEntry = toNewEntry(request.body);
+        const savedPatient = patientService.addEntry(newEntry, patient);
+        return response.status(201).json(savedPatient);
+    } catch (error) {
+        let errorMessage = 'Something went wrong.';
+        if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+        }
+        return response.status(400).send(errorMessage);
+    }
+
 });
 
 export default router;
