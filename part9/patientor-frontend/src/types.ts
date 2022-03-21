@@ -10,7 +10,7 @@ export enum Gender {
   Other = "Other"
 }
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
