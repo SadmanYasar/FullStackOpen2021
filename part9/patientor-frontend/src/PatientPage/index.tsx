@@ -8,16 +8,12 @@ import EntryDetails from '../components/EntryDetails';
 import GenderComponent from '../components/Gender';
 import { apiBaseUrl } from '../constants';
 import { updatePatient, useStateValue } from '../state';
-import { BaseEntry, Patient } from '../types';
+import { HealthCheckEntry, HealthCheckRating, Patient } from '../types';
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  /**
-   * onsubmit should take entryform values
-   */
-  //onSubmit: (values: EntryFormValues) => void;
-  onSubmit: () => void;
+  onSubmit: (values: EntryFormValues) => void;
   error?: string;
 }
 
@@ -31,7 +27,7 @@ const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
   </Modal>
 );
 
-export type EntryFormValues = Omit<BaseEntry, 'id'>;
+export type EntryFormValues = Omit<HealthCheckEntry, 'id'>;
 
 interface EntryFormProps {
   onSubmit: (values: EntryFormValues) => void;
@@ -44,17 +40,43 @@ const AddEntryForm = ({ onSubmit, onCancel } : EntryFormProps ) => {
   return (
     <Formik
       initialValues={{
+        type: 'HealthCheck',
+        healthCheckRating: HealthCheckRating.CriticalRisk,
         description: '',
         date: '',
         specialist: '',
       }}
-
       onSubmit={onSubmit}
-      onCancel
+      validate={values => {
+        const requiredError = 'Field is required';
+        const errors: { [field: string]: string } = {};
+        if (!values.type) {
+          errors.type = requiredError;
+        }
+        if (!values.healthCheckRating) {
+          errors.healthCheckRating = requiredError;
+        }
+        if (!values.date) {
+          errors.date = requiredError;
+        }
+        if (!values.description) {
+          errors.description = requiredError;
+        }
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }
+        return errors;
+      }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return(
           <Form className='form ui'>
+            <Field
+              label='Type'
+              placeholder='Type'
+              name='type'
+              component={TextField}
+            />
             <Field
               label='Description'
               placeholder='Description'
@@ -71,6 +93,12 @@ const AddEntryForm = ({ onSubmit, onCancel } : EntryFormProps ) => {
               label='Specialist'
               placeholder='Specialist'
               name='specialist'
+              component={TextField}
+            />
+            <Field 
+              label='HealthCheckRating'
+              placeholder='0-3'
+              name='healthCheckRating'
               component={TextField}
             />
             <DiagnosisSelection
@@ -117,8 +145,19 @@ const PatientPage: React.FC = () => {
 
     const patient = patients[id];
 
-    const submitNewEntry = () => {
-      console.log('entry!');
+    const submitNewEntry = async (values: EntryFormValues) => {
+      try {
+        const { data: newEntry } = await axios.post<Patient>(
+          `${apiBaseUrl}/patients/${id}/entries`,
+          values
+        );
+        dispatch(updatePatient(newEntry));
+        closeModal();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+          console.error(e.response?.data || 'Unknown Error');
+          //setError(e.response?.data?.error || 'Unknown error');
+      }
     };
 
     useEffect(() => {
@@ -161,7 +200,7 @@ const PatientPage: React.FC = () => {
           error={error}
           onSubmit={submitNewEntry}
         />
-        <Button onClick={openModal} primary>ADD NEW ENTRY</Button>
+        <Button onClick={openModal} primary>Add new entry</Button>
       </div>
     );
 };
