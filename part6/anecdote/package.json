@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "deep-freeze": "^0.0.1",
-    "json-server": "^0.17.0",
+    "json-server": "^0.17.1",
     "redux-devtools-extension": "^2.13.9"
   }
 }
